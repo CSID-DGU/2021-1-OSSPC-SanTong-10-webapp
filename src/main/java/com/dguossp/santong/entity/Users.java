@@ -1,5 +1,6 @@
 package com.dguossp.santong.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,6 @@ public class Users {
 
     // 패스워드
     private String password;
-
-    // 이메일
-    private String email;
 
     // 회원 프로필 사진 경로 (on AWS S3)
     private String profileImgDir;
@@ -75,6 +73,14 @@ public class Users {
     // 회원정보 마지막 업데이트 일시
     @UpdateTimestamp
     private LocalDateTime updatedDatetime;
+
+    // 회원가입 API 요청 요소
+    @Builder
+    public Users (String nickname, String password, Set<Roles> rolesSet) {
+        this.nickname = nickname;
+        this.password = password;
+        this.rolesSet = rolesSet;
+    }
 
 
 

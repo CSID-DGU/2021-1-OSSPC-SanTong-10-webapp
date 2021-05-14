@@ -12,6 +12,7 @@ import java.util.List;
  *  Spring Security에서 로그인 정보를 대조할 때 UserDetails를 사용하므로, 해당 인터페이스를 implements 받아서 구현
  * */
 
+
 @Getter
 public class UserInformation implements UserDetails {
 
