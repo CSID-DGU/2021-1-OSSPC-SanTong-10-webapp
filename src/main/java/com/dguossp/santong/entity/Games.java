@@ -23,9 +23,6 @@ public class Games {
     // 게임 모드 (0 : PVC, 1 : PVP)
     private int gameMode;
 
-    // 복기 진행 여부 (0 : 복기 진행 X, 1 : 복기 진행 O)
-    private int isReminded;
-
     // 게임 참여자 A
     @ManyToOne(fetch = FetchType.LAZY)
     private Users participantA;
@@ -34,7 +31,7 @@ public class Games {
     @ManyToOne(fetch = FetchType.LAZY)
     private Users participantB;
 
-    // 복기 리스트에 활용될 썸네일 이미지 사진
+    // 게임 리스트에 활용될 썸네일 이미지 사진
     private String thumbnailImgDir;
 
     // 복기 사진 디렉토리 리스트

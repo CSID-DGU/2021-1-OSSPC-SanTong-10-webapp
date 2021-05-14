@@ -8,10 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -23,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Users userEntity = usersRepository.findByNickname(username);
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
+
+        // NPE
+        if (userEntity == null) throw new UsernameNotFoundException("가입하지 않은 아이디이거나, 잘못된 비밀번호 입니다.");
 
         userEntity.getRolesSet().forEach(role -> {
             authorityList.add(new SimpleGrantedAuthority(role.getName()));
