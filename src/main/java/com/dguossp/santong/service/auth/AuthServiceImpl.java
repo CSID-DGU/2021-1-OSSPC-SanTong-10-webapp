@@ -83,8 +83,11 @@ public class AuthServiceImpl implements AuthService {
             Authentication authentication = authenticationProvider.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDto.getNickname(), loginDto.getPassword())
             );
-            // 로그인 세션을 통해 해당 유저의 로그인 상태 저장
-            httpSession.setAttribute(HS_AUTH_SESSION, authentication);
+
+            // 로그인 성공 시,
+            // 로그인 세션ID를 통해 해당 유저의 로그인 상태 저장
+            String JESSIONID = httpSession.getId();
+            httpSession.setAttribute(JESSIONID, authentication);
 
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");

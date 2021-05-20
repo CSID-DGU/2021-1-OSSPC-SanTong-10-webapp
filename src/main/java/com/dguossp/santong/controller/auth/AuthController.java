@@ -25,15 +25,14 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-
     // SignupDto 중, 'nickname' 필드만 사용
-    @GetMapping("nickname-check")
+    @GetMapping("/nickname-check")
     public ResponseEntity<?> doChecktNickname(@RequestBody SignUpDto signUpDto) {
 
         boolean result = authService.doCheckNickname(signUpDto);
@@ -91,4 +90,5 @@ public class AuthController {
 
         return new ResponseEntity<>(apiResponseEntity, HttpStatus.OK);
     }
+
 }

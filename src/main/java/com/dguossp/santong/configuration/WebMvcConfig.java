@@ -24,6 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("websocket_test.html");
         registry.addViewController("/index").setViewName("index.html");
         registry.addViewController("/login").setViewName("account/login.html");
     }
@@ -37,6 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry
                 // 로그인 여부 체크하는 인터셉터 (= 인증이 요구되는 요청 대상)
                 .addInterceptor(authInterceptor)
+                .addPathPatterns("/api/**")
                 // 인증이 요구되지 않는 요청에 대해서는 인터셉터 적용 없이 통과 처리
                 .excludePathPatterns("/api/auth/**");
     }
