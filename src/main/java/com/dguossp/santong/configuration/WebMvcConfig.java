@@ -31,13 +31,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // 인증이 기반이 되는 요청에 대해서 로그인 여부 검사
     // 로그인 여부에 따라 서비스 로직 전개
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-
-        registry
-                // 로그인 여부 체크하는 인터셉터 (= 인증이 요구되는 요청 대상)
-                .addInterceptor(authInterceptor)
-                // 인증이 요구되지 않는 요청에 대해서는 인터셉터 적용 없이 통과 처리
-                .excludePathPatterns("/api/auth/**");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//
+//        registry
+//                // 로그인 여부 체크하는 인터셉터 (= 인증이 요구되는 요청 대상)
+//                .addInterceptor(authInterceptor)
+//                // 인증이 요구되지 않는 요청에 대해서는 인터셉터 적용 없이 통과 처리
+//                .excludePathPatterns("/api/auth/**");
+//    }
 }

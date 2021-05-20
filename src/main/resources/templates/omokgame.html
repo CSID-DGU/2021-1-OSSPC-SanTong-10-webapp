@@ -1,0 +1,123 @@
+<!doctype html>
+
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>Renju Omok</title>
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <!-- <link rel="stylesheet" href="css/progress-bar.css"> -->
+
+</head>
+
+<body>
+<div class="header">
+    <h1>Renju Omok</h1>
+</div>
+<div id="pos_board"></div>
+<div id="my_dol_type" style="text-align: center;"></div>
+<div id="status_bar" class="header"></div>
+
+<!-- <div class="progress-bar">
+  <div class="bar positive">
+    <span>100%</span>
+  </div>
+  <div class="bar negative">
+    <span>0%</span>
+  </div>
+</div> -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
+<!--<script src="/socket-event-handler.js"></script>-->
+<script src="/omok.js"></script>
+<script src="/omok_renju.js"></script>
+<script src="/omok_simplegame.js"></script>
+<script>
+    const serverURL = 'http://localhost:3000';
+    const socket = io.connect(serverURL);
+    const color = { BLACK: 1, WHITE: 2 };
+
+    function changeAllowed() {
+        Object
+            .keys(g_allowed)
+            .map(function (key) {
+                g_allowed[key] = false;
+            });
+    }
+
+    socket.on('connecting', function (data) {
+        if (!localStorage.getItem('player')) {
+            localStorage.setItem('player', socket.id);
+        }
+
+        socket.emit('ready', { userId: localStorage.getItem('player') });
+    });
+
+    socket.on('player_dol_type', function (data) {
+        localStorage.setItem('dol_type', data.dolType);
+
+        socket.emit('init_data', {
+            userId: localStorage.getItem('player'),
+            dolType: localStorage.getItem('dol_type')
+        });
+    });
+
+    socket.on('game_data', function (data) {
+        const {
+            dolType,
+            board,
+            state,
+            player,
+            clicked,
+            turn
+        } = data;
+        const $dolType = $('#my_dol_type');
+
+        if (state === 'not_player') {
+            $dolType.text('관전자');
+            return;
+        }
+
+        if (player !== localStorage.getItem('player')) {
+            g_turn_color = color[dolType];
+            g_allowed[clicked] = true;
+            clickEventHander(clicked, 'draw');
+            return;
+        }
+
+        readyForGame();
+
+        updateGameData(color[dolType], board);
+        $dolType.text('나: ' + dolType);
+    });
+
+    socket.on('not_your_turn', function (data) {
+        const player = localStorage.getItem('player');
+
+        if (player === data.player) {
+            changeAllowed();
+            // $('.positive').css({ width: '100%' }).find('span').text('60');
+            // $('.negative').css({ width: '0%' }).find('span').text('0');
+        }
+    });
+
+    socket.on('won', function (data) {
+        const { dolType, clicked } = data;
+        g_turn_color = color[dolType];
+        g_allowed[clicked] = true;
+        clickEventHander(clicked);
+        changeAllowed();
+
+        $('#status_bar').text(data.dolType + ' WIN!!!');
+    });
+
+    // socket.on('timer_checker', function (data) {
+    //   const percent = 100 / SECOND;
+    //   const positive = SECOND - data;
+
+    //   $('.positive').css({ width: (data * percent) + '%' }).find('span').text(data);
+    //   $('.negative').css({ width: (positive * percent) + '%' }).find('span').text(data);
+    // });
+</script>
+</body>
+</html>
