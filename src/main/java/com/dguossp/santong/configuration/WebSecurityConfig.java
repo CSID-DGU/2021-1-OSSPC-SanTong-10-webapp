@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // static 디렉토리 파일 = 인증 대상에서 제외 (= 항상 통과)
-        web.ignoring().antMatchers("/static/**");
+        web.ignoring().antMatchers("/static/**", "/webjars/**");
     }
 
     @Override
