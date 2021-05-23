@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>회원가입</h2>
+    <div>
+        <form>
+            <div class="inp_text">
+                <label for="loginId">아이디</label>
+                <input type="text" id="loginId" autofocus name="nickname" placeholder="영문 or 숫자 조합(10자 이내)" >
+            </div>
+            <button id="btnLogin">중복확인</button>
+            <div class="inp_text">
+                <label for="loginPw">비밀번호</label>
+                <input type="password" id="loginPw" name="password" placeholder="영문,숫자,특수문자 포함" >
+            </div>
+            <div class="inp_text">
+                <label for="loginPwCheck">비밀번호 확인</label>
+                <input type="password" id="loginPwCheck" name="password" placeholder="비밀번호를 다시 한번 입력하세요." >
+            </div>
+        </form>
+    </div>
+
+    <script src="/signupFunc.js"></script>
+</body>
+</html>
