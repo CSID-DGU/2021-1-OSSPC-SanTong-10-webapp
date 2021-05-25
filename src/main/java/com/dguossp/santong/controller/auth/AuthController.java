@@ -34,7 +34,7 @@ public class AuthController {
     // SignupDto 중, 'nickname' 필드만 사용
     @GetMapping("/nickname-check")
     public ResponseEntity<?> doChecktNickname(@RequestBody SignUpDto signUpDto) {
-
+        log.info("회원가입 닉네임 중복체크 API 요청");
         boolean result = authService.doCheckNickname(signUpDto);
         ApiResponseEntity apiResponseEntity;
 
@@ -76,7 +76,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody LoginDto loginDto, HttpSession httpSession) {
-
+        log.info("로그인 API 요청");
         // 로그인 서비스 로직 호출
         // 예외 발생 시 해당 로직에서 처리
         authService.doLogin(loginDto, httpSession);

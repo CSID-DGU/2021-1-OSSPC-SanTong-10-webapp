@@ -1,6 +1,8 @@
 package com.dguossp.santong.configuration;
 
+import com.dguossp.santong.interceptor.stomp.TopicSubInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -22,6 +24,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Autowired
+    private TopicSubInterceptor topicSubInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -45,36 +50,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
-            /**
-             * Invoked before the Message is actually sent to the channel.
-             * This allows for modification of the Message if necessary.
-             * If this method returns {@code null} then the actual
-             * send invocation will not occur.
-             *
-             * @param message
-             * @param channel
-             */
-            @Override
-            public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                StompHeaderAccessor sha = StompHeaderAccessor.wrap(message);
-                StompCommand command = sha.getCommand();
-
-                if (StompCommand.CONNECT.equals(command)) {
-                    log.info("{}, message.getPayload {}", command, message.getPayload());
-                    log.info("{}, message.getHeader {}", command, message.getHeaders());
-                    log.info("{}, accessor.toString {}", command, sha.toString());
-                    log.info("{}, accessor.getDestination()", sha.getDestination());
-
-                } else if(StompCommand.UNSUBSCRIBE.equals(command) && message.getHeaders().get("simpSubscriptionId").toString().startsWith("room-user-")) {
-                    String sessionId = message.getHeaders().get("simpSessionId").toString();
-                    log.info("sessionId : {}", sessionId);
-                } else if(StompCommand.DISCONNECT.equals(command)) { // 갑작스러운 종료에도 채팅창을 잘 나가게 해야한다.
-                    String sessionId = message.getHeaders().get("simpSessionId").toString();
-                    log.info("sessionId : {}", sessionId);
-                }
-                return message;
-            }
-        });
+        registration.interceptors(topicSubInterceptor);
     }
 }
