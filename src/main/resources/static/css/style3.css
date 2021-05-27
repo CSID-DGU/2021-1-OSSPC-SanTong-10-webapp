@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    transition: 0.5s all;
+}
+
+button{
+    cursor: pointer;
+}
+
+#signup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: 400px;
+    margin:30px auto;
+}
+
+#signup fieldset {
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+#signup ul li {
+    line-height: 30px;
+    list-style: none;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+}
+
+#signup button {
+    border: 1px solid #222;
+    border-radius: 20px;
+    display: block;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin: auto;
+    padding: 7px 25px;
+}
+
+#signup fieldset:last-of-type {
+    border:none;
+    margin-bottom:0;
+}
+
+.signup_txt{
+    margin: 0 auto;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+}
+#signup fieldset {
+    border: 0;
+}
+#signup fieldset > div.signup_container > div > label{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 100%;
+}
+#signup fieldset > div.signup_container > div > label::after{
+    content: '*';
+    color: #aa0000;
+    margin-left: 3px;
+}
+#signup fieldset > div.signup_container > div > input{
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 13px;
+    color: #000;
+    border: none;
+    outline: 0;
+    -webkit-appearance: none;
+    background-color: transparent;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    padding: 7px 5px;
+    box-sizing: border-box;
+}
+#signup fieldset > div.signup_container > div > input#loginId{
+    width: 70%;
+    float: left;
+}
+#signup button#btnDoublecheck{
+    margin: 0 1%;
+    width: 28%;
+    padding: 6px 0;
+    box-sizing: border-box;
+    border-radius: 0;
+    font-size: 13px;
+    float: left;
+    outline: 0;
+    border: 0;
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+#signup button #btnDoublecheck:hover{
+    background-color:#fff;
+    color:#000;
+    border: 1px solid #000;
+}
+#signup fieldset > div.signup_container > fieldset > legend{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 100%;
+}
+#signup fieldset > div > fieldset > legend::after{
+    content: '*';
+    color: #aa0000;
+    margin-left: 3px;
+}
+.radio_check{
+    border: 1px solid #ddd;
+    padding: 5px 30px;
+    display: flex;
+    justify-content: space-around;
+}
+#signup > fieldset#button_container > button{
+    width: 100%;
+    padding: 7px 0;
+    border-radius: 0;
+    margin-bottom: 7px;
+    border: 1px solid #000;
+    outline: 0;
+}
+.sub_btn{
+    background: #000;
+    color: #fff;
+}
+.sub_btn:hover{
+    background: #fff;
+    color: #333;
+}
+.can_btn{
+    background: #fff;
+    color: #000;
+}
+/* .can_btn:hover{
+    background: #000;
+    color: #fff;
+} */

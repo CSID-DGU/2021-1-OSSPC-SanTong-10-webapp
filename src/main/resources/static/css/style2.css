@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+    transition: 0.5s all;
+}
 a {
     color: #333;
     text-decoration: none;
@@ -49,16 +54,12 @@ body, button, input, select, td, textarea, th {
     -webkit-font-smoothing: antialiased;
 }
 
-fieldset, img {
-    border: 0;
+button{
+    cursor: pointer;
 }
 
-.box_login {
-    margin: 35px 0 0;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    background-color: #fff;
-    box-sizing: border-box;
+fieldset, img {
+    border: 0;
 }
 
 .inp_text {
@@ -67,10 +68,6 @@ fieldset, img {
     margin: 0;
     padding: 18px 19px 19px;
     box-sizing: border-box;
-}
-
-.inp_text+.inp_text {
-    border-top: 1px solid #ddd;
 }
 
 .inp_text input {
@@ -111,4 +108,60 @@ fieldset, img {
 .login_append .txt_find {
     float: right;
     color: #777;
+}
+
+.inner_login {
+    border: 1px solid #ddd;
+    margin: 0;
+    transform: translate(-50%, -50%);
+}
+.login_fieldset{
+    width: 400px;
+    padding: 30px 50px;
+    box-sizing: border-box;
+}
+.login_txt{
+    margin: 0 auto;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+}
+.box_login {
+    margin-top: 35px;
+    box-sizing: border-box;
+}
+.inp_text{
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    padding: 13px 5px;
+}
+.btnLogin{
+    width: 100%;
+    padding: 12px 0;
+    background-color: #000;
+    color: #fff;
+    outline: none;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.btnLogin:hover{
+    background-color: #fff;
+    color: #000;
+}
+.signup_container{
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+.signup_query{
+    margin: 0;
+    display: inline-block;
+    color: #777;
+}
+.signup_container > a{
+    color: #000;
+    font-weight: bold;
 }

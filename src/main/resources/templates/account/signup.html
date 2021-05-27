@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>회원가입 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style3.css">
 </head>
 <body>
-    <h2>회원가입</h2>
-    <div>
-        <form>
-            <div class="inp_text">
-                <label for="loginId">아이디</label>
-                <input type="text" id="loginId" autofocus name="nickname" placeholder="영문 or 숫자 조합(10자 이내)" >
-            </div>
-            <button id="btnLogin">중복확인</button>
-            <div class="inp_text">
-                <label for="loginPw">비밀번호</label>
-                <input type="password" id="loginPw" name="password" placeholder="영문,숫자,특수문자 포함" >
-            </div>
-            <div class="inp_text">
-                <label for="loginPwCheck">비밀번호 확인</label>
-                <input type="password" id="loginPwCheck" name="password" placeholder="비밀번호를 다시 한번 입력하세요." >
-            </div>
-        </form>
+<form id="signup">
+  <fieldset>
+    <div class="signup_txt"><span>회원가입</span></div>
+    <div class="signup_container">
+      <div>
+        <label for="loginId">아이디</label>
+        <input type="text" id="loginId" autofocus name="nickname" placeholder="영문 or 숫자 조합(10자 이내)" >
+        <button id="btnDoublecheck">중복확인</button>
+      </div>
+      <div>
+        <label for="loginPw">비밀번호</label>
+        <input type="password" id="loginPw" name="password" placeholder="영문,숫자,특수문자 포함" >
+      </div>
+      <div>
+        <label for="loginPwCheck">비밀번호 확인</label>
+        <input type="password" id="loginPwCheck" name="password" placeholder="비밀번호를 다시 한번 입력하세요." >
+      </div>
+      <fieldset>
+        <legend>오목 실력</legend>
+        <div class="radio_check">
+          <div>
+            <input type="radio" name="level" id="levelHigh">
+            <label for="levelHigh">상</label>
+          </div>
+          <div>
+            <input type="radio" name="level" id="levelMed">
+            <label for="levelMed">중</label>
+          </div>
+          <div>
+            <input type="radio" name="level" id="levelLow">
+            <label for="levelLow">하</label>
+          </div>
+        </div>
+      </fieldset>
     </div>
-
-    <script src="/signupFunc.js"></script>
+  </fieldset>
+  <fieldset id="button_container">
+    <button type="submit" class="sub_btn">확인</button>
+    <button type="button" class="can_btn" onclick="cancleBtn()">취소</button>
+  </fieldset>
+</form>
+<script src="js/signupFunc.js"></script>
 </body>
 </html>

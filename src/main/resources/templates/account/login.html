@@ -7,36 +7,29 @@
 </head>
 <body>
 <div class="inner_login">
-<!--    <form method="post" id="authForm" action="/api/auth/login">-->
     <form>
-        <fieldset>
-            <legend class="screen_out">로그인</legend>
+        <fieldset class="login_fieldset">
+            <div class="login_txt"><span>LOGIN</span></div>
             <div class="box_login">
                 <div class="inp_text">
-                    <label for="loginId" class="screen_out">아이디</label>
-                    <input type="text" id="loginId" autofocus name="nickname" placeholder="ID" >
+                    <label for="loginId" class="screen_out"></label>
+                    <input type="text" id="loginId" autofocus name="nickname" placeholder="아이디" >
                 </div>
                 <div class="inp_text">
-                    <label for="loginPw" class="screen_out">비밀번호</label>
-                    <input type="password" id="loginPw" name="password" placeholder="Password" >
+                    <label for="loginPw" class="screen_out"></label>
+                    <input type="password" id="loginPw" name="password" placeholder="비밀번호 (영문+숫자+특수문자 조합 8~16자리)">
                 </div>
             </div>
-        <!-- <button type="submit" class="btn_login"  disabled>로그인</button>-->
             <div>
-            <button onclick="init()" id="btnLogin">로그인</button>
-            <br>
-            <button id="btnSignup">회원가입</button>
-            </div>
-            <div class="login_append">
-                <span class="txt_find">
-                <a href="/member/find/loginId" class="link_find">아이디</a>
-                   /
-                <a href="/member/find/password" class="link_find">비밀번호 찾기</a>
-            </span>
+                <button type="submit" id="btnLogin" class="btnLogin">로그인</button>
+                <div class="signup_container">
+                    <p class="signup_query">계정이 없으신가요?</p>
+                    <a href="signup.html">가입하기</a>
+                </div>
             </div>
         </fieldset>
     </form>
 </div>
-    <script src="/loginFunc.js"></script>
+<script src="js/loginFunc.js"></script>
 </body>
 </html>
