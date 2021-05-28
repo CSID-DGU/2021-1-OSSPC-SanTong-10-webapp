@@ -6,8 +6,8 @@
 a {
     color: #333;
     text-decoration: none;
-
 }
+
 input {
     -webkit-writing-mode: horizontal-tb !important;
     text-rendering: auto;
