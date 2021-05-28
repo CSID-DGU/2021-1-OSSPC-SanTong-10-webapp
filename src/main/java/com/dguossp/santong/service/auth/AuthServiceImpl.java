@@ -63,10 +63,14 @@ public class AuthServiceImpl implements AuthService {
         // 최초 회원가입 대상 (일반 유저)으로 ROLE_USER 권한 부여
         roleSet.add(role);
 
+        // 오목 게임 수준 (0 : 초보, 1 : 중수, 2 : 고수)
+        // 유저의 오목 실력
+
         Users users = Users.builder()
                 .nickname(signUpDto.getNickname())
                 .password(encoder.encode(signUpDto.getPassword()))
                 .rolesSet(roleSet)
+                .level(signUpDto.getLevel())
                 .build();
 
         // 회원 저장 (INSERT)

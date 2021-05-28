@@ -79,10 +79,11 @@ public class Users {
 
     // 회원가입 API 요청 요소
     @Builder
-    public Users (String nickname, String password, Set<Roles> rolesSet) {
+    public Users (String nickname, String password, Set<Roles> rolesSet, int level) {
         this.nickname = nickname;
         this.password = password;
         this.rolesSet = rolesSet;
+        this.level = level;
     }
 
 
