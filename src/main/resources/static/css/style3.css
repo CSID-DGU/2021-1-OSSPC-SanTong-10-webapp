@@ -4,6 +4,8 @@
     transition: 0.5s all;
 }
 
+a { text-decoration: none }
+
 button{
     cursor: pointer;
 }
