@@ -10,7 +10,6 @@ function invalidCheck(){
 
     var rePwd1 = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/; //특수문자용 정규식
     var rePwd2 = /[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/; //문자와숫자,_용 정규식
-    //정규식 확인
     if(!rePwd1.test(inputPwd.value)){
         alert("비밀번호는 특수문자를 포함하세요.");
         inputPwd.focus();
@@ -26,7 +25,7 @@ function invalidCheck(){
 
 function fnCheckDuplicateNickname() {
     const nickname = document.querySelector("input[name=nickname]").value;
-    fetch('api/auth/nickname-check/'+nickname).then(function (response) {
+    fetch('/api/auth/nickname-check/'+nickname).then(function (response) {
         if (response.ok) {
             return response.json();
         }
@@ -46,7 +45,7 @@ function fnCheckDuplicateNickname() {
 
 function fnSignUp() {
     const nickname = document.querySelector("input[name=nickname]");
-    fetch('api/auth/nickname-check', {
+    fetch('/api/auth/nickname-check', {
         method: 'GET',
         body: new URLSearchParams({nickname}),
     }).then(function (response) {
