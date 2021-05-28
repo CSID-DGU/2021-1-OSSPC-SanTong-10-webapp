@@ -82,7 +82,7 @@ function init(){
             console.log(data);
             // 성공
             if (data?.statusCode == 200) {
-                window.location = "account/login.html"
+                window.location = "localhost:8080/login"
             } else { // 실패
                 alert(data.message);
             }

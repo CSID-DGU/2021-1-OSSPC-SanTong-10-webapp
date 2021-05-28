@@ -15,7 +15,7 @@ function init(){
             console.log(data);
             // 로그인 성공
             if (data?.statusCode == 200) {
-                window.location = "index.html"
+                window.location = "localhost:8080/index"
             } else { // 로그인 실패
                 alert(data.message);
             }
