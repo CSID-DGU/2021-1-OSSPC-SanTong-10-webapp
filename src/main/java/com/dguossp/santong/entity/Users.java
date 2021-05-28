@@ -30,6 +30,9 @@ public class Users {
     // 패스워드
     private String password;
 
+    // 오목 수준 (하 : 0, 중 : 1, 상 : 2 )
+    private int level;
+
     // 회원 프로필 사진 경로 (on AWS S3)
     private String profileImgDir;
 
@@ -76,10 +79,11 @@ public class Users {
 
     // 회원가입 API 요청 요소
     @Builder
-    public Users (String nickname, String password, Set<Roles> rolesSet) {
+    public Users (String nickname, String password, Set<Roles> rolesSet, int level) {
         this.nickname = nickname;
         this.password = password;
         this.rolesSet = rolesSet;
+        this.level = level;
     }
 
 
