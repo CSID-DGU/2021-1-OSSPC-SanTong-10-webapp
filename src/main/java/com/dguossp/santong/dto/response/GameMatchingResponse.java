@@ -16,10 +16,10 @@ public class GameMatchingResponse {
     private String gameSubDestination;
 
     // 로그인 유저 정보
-    private UserInfoDto loginUser;
+    private UserGameInfoDto loginUser;
 
     // 게임 상대방 정보
-    private UserInfoDto opponentUser;
+    private UserGameInfoDto opponentUser;
 
     public enum GameMatchingResult {
         SUCCESS, CANCEL, TIMEOUT

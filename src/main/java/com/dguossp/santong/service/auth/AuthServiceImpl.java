@@ -24,7 +24,6 @@ import java.util.Set;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private static final String HS_AUTH_SESSION = "HS_AUTH_SESSION";
 
     @Autowired
     private RoleRepository roleRepository;

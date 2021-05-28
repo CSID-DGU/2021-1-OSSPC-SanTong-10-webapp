@@ -1,4 +1,4 @@
-# User Info API
+# 회원정보 조회 API
 
 ### | 메인 페이지 반환 받은 경우 로그인 여부 체크를 하기 위해 User Info API를 요청합니다.
 

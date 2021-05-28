@@ -30,6 +30,9 @@ public class Users {
     // 패스워드
     private String password;
 
+    // 오목 수준 (하 : 0, 중 : 1, 상 : 2 )
+    private int level;
+
     // 회원 프로필 사진 경로 (on AWS S3)
     private String profileImgDir;
 

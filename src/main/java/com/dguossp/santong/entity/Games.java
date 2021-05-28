@@ -2,6 +2,9 @@ package com.dguossp.santong.entity;
 
 
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "games")
+@Getter
+@NoArgsConstructor
 public class Games {
 
     // 식별자 (PK)
@@ -25,11 +30,16 @@ public class Games {
 
     // 게임 참여자 A
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "participantA")
     private Users participantA;
 
     // 게임 참여자 B
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "participantB")
     private Users participantB;
+
+    // 게임 상태 (0 : 게임 중, 1 : 게임 종료)
+    private int gameStatus;
 
     // 게임 리스트에 활용될 썸네일 이미지 사진
     private String thumbnailImgDir;
@@ -45,4 +55,13 @@ public class Games {
     // 게임 정보 마지막 업데이트 일시
     @UpdateTimestamp
     private LocalDateTime updatedDatetime;
+
+    @Builder
+    public Games(String title, int gameMode, Users participantA, Users participantB) {
+        this.title = title;
+        this.gameMode = gameMode;
+        this.participantA = participantA;
+        this.participantB = participantB;
+    }
+
 }
