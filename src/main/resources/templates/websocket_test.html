@@ -2,8 +2,9 @@
 <html>
 <head>
     <title>Hello WebSocket</title>
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/main.css" rel="stylesheet">
+    <link href="/css/game/main.css" rel="stylesheet">
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
@@ -11,17 +12,35 @@
     Javascript and reload this page!</h2></noscript>
 <div id="main-content" class="container">
     <div class="row">
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="gamesearch">메인 화면 :</label>
+                    <button id="gamesearch" class="btn btn-default" type="submit">게임 매칭 요청</button>
+                    <button id="b" class="btn btn-default" type="submit">게임 매칭 요청 취소</button>
+                </div>
+            </form>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+
+
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
                     <label for="connect">WebSocket connection:</label>
                     <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="gamesearch" class="btn btn-default" type="submit">Game Search</button>
                     <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Cancel
                     </button>
                 </div>
             </form>
         </div>
+
+
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
@@ -49,6 +68,6 @@
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-<script src="/app.js"></script>
+<script src="/js/game/app.js" charset="UTF-8"></script>
 </body>
 </html>
