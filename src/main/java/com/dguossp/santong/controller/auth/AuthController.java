@@ -32,7 +32,7 @@ public class AuthController {
     private AuthService authService;
 
     // SignupDto 중, 'nickname' 필드만 사용
-    @GetMapping("/nickname-check")
+    @PostMapping(value = "/nickname-check")
     public ResponseEntity<?> doChecktNickname(@RequestBody SignUpDto signUpDto) {
         log.info("회원가입 닉네임 중복체크 API 요청");
         boolean result = authService.doCheckNickname(signUpDto);

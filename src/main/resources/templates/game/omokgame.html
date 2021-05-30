@@ -2,20 +2,82 @@
 
 <html lang="ko">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="charset=UTF-8" />
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/game/main.css" rel="stylesheet">
+    <link href="/css/omok/omok.css" rel="stylesheet">
     <title>Renju Omok</title>
-    <link rel="stylesheet" href="/css/omok/omok.css">
 
 </head>
+
+<div id="main-content" class="container">
+    <div class="row">
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="gamesearch">메인 화면 :</label>
+                    <button id="gamesearch" class="btn btn-default" type="submit">게임 매칭 요청</button>
+                    <button id="b" class="btn btn-default" type="submit">게임 매칭 요청 취소</button>
+                </div>
+            </form>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">WebSocket connection:</label>
+                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">What is your name?</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                </div>
+                <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="greetings">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <body>
 <div class="header">
     <h1>Renju Omok</h1>
 </div>
 <div id="pos_board"></div>
-<div id="status_bar" class="header"></div>
+
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
 <script src="/js/omok/omok.js"></script>
 <script src="/js/omok/omok_renju.js"></script>
+<script src="/js/game/game_ws.js" charset="UTF-8"></script>
 <script src="/js/omok/omok_simplegame.js"></script>
+
 </body>
 </html>

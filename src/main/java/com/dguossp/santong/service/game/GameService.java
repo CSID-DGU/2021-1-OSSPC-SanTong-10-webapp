@@ -100,7 +100,6 @@ public class GameService {
             log.info("로그인 유저 오목 게임 수준 : [고수]");
             // 게임 매칭 유저의 오목게임 수준이 "고수"
             searchingAdvancedUsers.put(username, deferredResult);
-//            searchingAdvancedUsers.put("username", deferredResult);
             // [3] 게임 매칭 메소드 호출 -> 각 유저가 속한 레벨 대기열에서 상대 서칭.
             doMatchingGame(username, searchingAdvancedUsers);
         }
@@ -155,6 +154,14 @@ public class GameService {
 
     }
 
+    public void sendMessage() {
+
+    }
+
+
+
+
+
     private void doMatchingGame(String username, Map<String, DeferredResult<GameMatchingResponse>> deferredResultMap) {
 
 
@@ -208,7 +215,7 @@ public class GameService {
         // 매칭 성공 시점에서, 로그인 유저가 흑돌로 지정
         UserGameInfoDto loginUserGameInfoDto = UserGameInfoDto.builder()
                 .nickname(username)
-                .turn(true) // true : 흑돌, false : 백돌
+                .turn(1) // 1 : 흑돌, 2 : 백돌
                 .gameLevel(loginUser.getLevel())
                 .build();
 
@@ -216,7 +223,7 @@ public class GameService {
         // 매칭 성공 시점에서, 게임 상대 유저가 백돌로 지정
         UserGameInfoDto opponentUserGameInfoDto = UserGameInfoDto.builder()
                 .nickname(opponentUsername)
-                .turn(false) // true : 흑돌, false : 백돌
+                .turn(2)  // 1 : 흑돌, 2 : 백돌
                 .gameLevel(opponentUser.getLevel())
                 .build();
 
@@ -226,7 +233,8 @@ public class GameService {
                 .gameMatchingResult(GameMatchingResponse.GameMatchingResult.SUCCESS)
                 .loginUser(loginUserGameInfoDto)
                 .opponentUser(opponentUserGameInfoDto)
-                .gameSubDestination("/topic/"+ gameId)
+                .gameId(gameId)
+                .gameSubDestination("/topic/game/"+ gameId)
                 .build();
 
 
@@ -235,7 +243,8 @@ public class GameService {
                 .gameMatchingResult(GameMatchingResponse.GameMatchingResult.SUCCESS)
                 .loginUser(opponentUserGameInfoDto)
                 .opponentUser(loginUserGameInfoDto)
-                .gameSubDestination("/topic/"+ gameId)
+                .gameId(gameId)
+                .gameSubDestination("/topic/game/"+ gameId)
                 .build();
 
         // 로그인 유저에게 매칭 성공 시점에 응답
@@ -252,6 +261,8 @@ public class GameService {
         log.info("랜덤으로 픽된 상대 유저네임 : " + keySetsList.get(random.nextInt(keySetsList.size())));
         return keySetsList.get(random.nextInt(keySetsList.size()));
     }
+
+
 
 
 

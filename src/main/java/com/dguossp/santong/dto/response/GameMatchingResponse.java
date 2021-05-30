@@ -12,6 +12,9 @@ public class GameMatchingResponse {
     // enum (매칭 성공, 취소, 시간 초과)
     private GameMatchingResult gameMatchingResult;
 
+    // 생성된 게임방 고유 Id
+    private long gameId;
+
     // WS 게임방 구독 경로
     private String gameSubDestination;
 

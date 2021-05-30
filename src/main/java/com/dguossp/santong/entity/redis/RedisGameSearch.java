@@ -1,12 +1,10 @@
 package com.dguossp.santong.entity.redis;
 
-import com.dguossp.santong.dto.request.Greeting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.persistence.Id;
 import java.io.Serializable;

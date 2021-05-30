@@ -8,4 +8,6 @@ public interface GamesRepository extends JpaRepository<Games, Long> {
 
     Games findByParticipantAAndParticipantBAndGameStatus(Users usersA, Users usersB, int gameStatus);
 
+    Games findById(long gameId);
+
 }

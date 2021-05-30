@@ -1,5 +1,7 @@
 package com.dguossp.santong.entity;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "game_records")
+@NoArgsConstructor
 public class GameRecords {
 
     // 식별자 (PK)
@@ -22,11 +25,13 @@ public class GameRecords {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Games game;
 
-    @ManyToOne
-    private Users user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Users loginUser;
 
     // X 좌표 값
     private int x;
@@ -34,14 +39,26 @@ public class GameRecords {
     // Y 좌표 값
     private int y;
 
-    // 0 : 백돌, 1 : 흑돌
-    private int stoneStatus;
-
-    // 0 : 미결정 수 1 : 결정수 (승리 결정 수)
+    // 1: ~결정수 2: 결정수
     private int isFinish;
+
+    // 1 : 흑돌, 2 : 백돌
+    private int stoneStatus;
 
     // 유저가 착수한 일시
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdDatetime;
+
+    @Builder
+    public GameRecords(Games game, Users loginUser, int x, int y, int isFinish, int stoneStatus) {
+        this.game = game;
+        this.loginUser = loginUser;
+        this.x = x;
+        this.y = y;
+        this.isFinish = isFinish;
+        this.stoneStatus = stoneStatus;
+    }
+
+
 }

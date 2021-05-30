@@ -67,6 +67,10 @@ public class Users {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserItems> userItemsSet = new HashSet<>();
 
+    // (로그인) 유저가 게임 별 착수한 데이터 정보
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "loginUser")
+    private Set<GameRecords> gameRecordsSet = new HashSet<>();
+
 
     // 회원가입 일시
     @CreationTimestamp

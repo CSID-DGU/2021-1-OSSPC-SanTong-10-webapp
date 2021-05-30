@@ -13,8 +13,8 @@ public class UserGameInfoDto {
 
     private String nickname;
 
-    // (true : 흑돌, false : 백돌)
-    private boolean turn;
+    // 1 : 흑돌, 2 : 백돌
+    private int turn;
 
     // 유저 게임 수준 (0 : 하수 / 1 : 중수 / 2 : 고수) <- 회원가입 회원정보 입력 시 기재한 값 기준
     private int gameLevel;
