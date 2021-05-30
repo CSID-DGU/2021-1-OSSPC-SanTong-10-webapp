@@ -14,7 +14,9 @@
             <div>
                 <label for="loginId">아이디</label>
                 <input type="text" id="loginId" autofocus name="nickname" placeholder="영문 or 숫자 조합(10자 이내)" >
-                <button id="btnDoublecheck">중복확인</button>
+                <button type="button" onclick="fnCheckDuplicateNickname()">중복확인</button>
+                <input type="hidden" id="checkYN" name="checkYN">
+<!--                <button type="button" id="btnDoublecheck">중복확인</button>-->
             </div>
             <div>
                 <label for="loginPw">비밀번호</label>
@@ -28,16 +30,16 @@
                 <legend>오목 실력</legend>
                 <div class="radio_check">
                     <div>
-                        <input type="radio" name="level" id="levelHigh">
-                        <label for="levelHigh">상</label>
+                        <input type="radio" name="level" id="levelHigh" value="2" checked>
+                        <label for="levelHigh">고수</label>
                     </div>
                     <div>
-                        <input type="radio" name="level" id="levelMed">
-                        <label for="levelMed">중</label>
+                        <input type="radio" name="level" id="levelMed" value="1">
+                        <label for="levelMed">중수</label>
                     </div>
                     <div>
-                        <input type="radio" name="level" id="levelLow">
-                        <label for="levelLow">하</label>
+                        <input type="radio" name="level" id="levelLow" value="0">
+                        <label for="levelLow">초보</label>
                     </div>
                 </div>
             </fieldset>
@@ -45,7 +47,7 @@
     </fieldset>
     <fieldset id="button_container">
         <button type="submit" class="sub_btn">확인</button>
-        <button type="button" class="can_btn" onclick="cancelBtn()"><a href="localhost:8080/login">취소</a></button>
+        <button type="button" class="can_btn" onclick="cancelBtn()"><a href="/login">취소</a></button>
     </fieldset>
 </form>
 <script src="/signupFunc.js"></script>
