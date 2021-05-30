@@ -24,7 +24,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("websocket_test.html");
         registry.addViewController("/index").setViewName("index.html");
         registry.addViewController("/login").setViewName("account/login.html");
         registry.addViewController("/signup").setViewName("account/signup.html");

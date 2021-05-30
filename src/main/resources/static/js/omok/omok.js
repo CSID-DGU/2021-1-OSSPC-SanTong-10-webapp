@@ -63,7 +63,9 @@ function gen_html_board(elem){
             if(j == 15-1){
                 cross_h.className = 'cross_h_right';
             }
-            stone.className = 'empty_stone_white';
+
+            stone.className = 'empty_stone_blue';
+
             stone.id = i +'_' + j;
             colElem.appendChild(cross_h);
             colElem.appendChild(cross_v);

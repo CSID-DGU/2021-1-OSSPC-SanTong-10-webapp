@@ -3,7 +3,6 @@ package com.dguossp.santong.service.game;
 
 import com.dguossp.santong.dto.response.GameMatchingResponse;
 import com.dguossp.santong.dto.response.UserGameInfoDto;
-import com.dguossp.santong.dto.response.UserInfoDto;
 import com.dguossp.santong.entity.Games;
 import com.dguossp.santong.entity.Users;
 import com.dguossp.santong.repository.GamesRepository;
@@ -101,7 +100,6 @@ public class GameService {
             log.info("로그인 유저 오목 게임 수준 : [고수]");
             // 게임 매칭 유저의 오목게임 수준이 "고수"
             searchingAdvancedUsers.put(username, deferredResult);
-//            searchingAdvancedUsers.put("username", deferredResult);
             // [3] 게임 매칭 메소드 호출 -> 각 유저가 속한 레벨 대기열에서 상대 서칭.
             doMatchingGame(username, searchingAdvancedUsers);
         }
@@ -109,28 +107,18 @@ public class GameService {
         // 지정한 게임 매칭 요청 시간이 초과한 경우 (예외 처리) -> 클라이언트 측에 (유저에게) "게임 매칭에 실패 했습니다. 다시 시도해주세요" 안내.
         deferredResult.onTimeout(() -> {
 
-            // onTimeout() 콜백 발생 시,
-            // 로그인 유저가 속한 레벨 대기열에서 해당 유저가 없는 경우는 이미 매칭 취소 상태
-            // 따라서, TIMEOUT이 아닌 CANCEL 응답을 보낸다.
-            boolean isCancelStatus = isCancelStauts(loginUser);
-
             // 게임 매칭결과 응답 초기화
             GameMatchingResponse gameMatchingResponse;
 
-            if (!isCancelStatus) {
-                gameMatchingResponse = GameMatchingResponse.builder()
-                        .gameMatchingResult(GameMatchingResponse.GameMatchingResult.TIMEOUT)
-                        .build();
-            } else {
-                gameMatchingResponse = GameMatchingResponse.builder()
-                        .gameMatchingResult(GameMatchingResponse.GameMatchingResult.CANCEL)
-                        .build();
-            }
+            gameMatchingResponse = GameMatchingResponse.builder()
+                    .gameMatchingResult(GameMatchingResponse.GameMatchingResult.TIMEOUT)
+                    .build();
 
             deferredResult.setErrorResult(gameMatchingResponse);
         });
 
         // 게임 매칭 과정에서 예외 발생하는 경우 (예외 처리) -> 클라이언트 측에 예외에 따라서 안내
+        // 추후 추가.
 
     }
 
@@ -139,22 +127,40 @@ public class GameService {
         // [1] 유저네임(고유식별자)를 통해 유저의 오목 수준 조회 -> 해당 대기열에서 해당 유저 삭제
         Users loginUser = usersRepository.findByNickname(username);
 
+        // 로그인 유저의 DeferredResult 오브젝트
+        DeferredResult<GameMatchingResponse> loginUserDeferredResult;
+
         // [2] 유저의 오목게임 수준 기준에 맞춰, 해당 대기열에서 유저 정보 삭제
         if (loginUser.getLevel() == NOVICE) {
             log.info("로그인 유저 오목 게임 수준 : [초보]");
             // 게임 매칭 유저의 오목게임 수준이 "초보"
-            searchingNoviceUsers.remove(username);
+            loginUserDeferredResult = searchingNoviceUsers.remove(username);
 
         } else if (loginUser.getLevel() == IM) {
             log.info("로그인 유저 오목 게임 수준 : [중수]");
             // 게임 매칭 유저의 오목게임 수준이 "중수"
-            searchingIMUsers.remove(username);
+            loginUserDeferredResult = searchingIMUsers.remove(username);
         } else {
             log.info("로그인 유저 오목 게임 수준 : [고수]");
             // 게임 매칭 유저의 오목게임 수준이 "고수"
-            searchingAdvancedUsers.remove(username);
+            loginUserDeferredResult = searchingAdvancedUsers.remove(username);
         }
+
+        GameMatchingResponse gameMatchingResponse = GameMatchingResponse.builder()
+                    .gameMatchingResult(GameMatchingResponse.GameMatchingResult.CANCEL)
+                    .build();
+
+        loginUserDeferredResult.setResult(gameMatchingResponse);
+
     }
+
+    public void sendMessage() {
+
+    }
+
+
+
+
 
     private void doMatchingGame(String username, Map<String, DeferredResult<GameMatchingResponse>> deferredResultMap) {
 
@@ -199,6 +205,7 @@ public class GameService {
         // Hibernate: insert into games
         gamesRepository.save(games);
 
+        // Exception Caution : IncorrectResultSizeDataAccessException (extending RuntimeException)
         // Hibernate: select  from  where games0_.participanta=? and games0_.participantb=? and games0_.game_status=?
         Games gameForId = gamesRepository.findByParticipantAAndParticipantBAndGameStatus(loginUser, opponentUser, GAME_ING);
         // loginUser, opponentUser 참가자 생성된 게임 ID
@@ -208,7 +215,7 @@ public class GameService {
         // 매칭 성공 시점에서, 로그인 유저가 흑돌로 지정
         UserGameInfoDto loginUserGameInfoDto = UserGameInfoDto.builder()
                 .nickname(username)
-                .turn(true) // true : 흑돌, false : 백돌
+                .turn(1) // 1 : 흑돌, 2 : 백돌
                 .gameLevel(loginUser.getLevel())
                 .build();
 
@@ -216,7 +223,7 @@ public class GameService {
         // 매칭 성공 시점에서, 게임 상대 유저가 백돌로 지정
         UserGameInfoDto opponentUserGameInfoDto = UserGameInfoDto.builder()
                 .nickname(opponentUsername)
-                .turn(false) // true : 흑돌, false : 백돌
+                .turn(2)  // 1 : 흑돌, 2 : 백돌
                 .gameLevel(opponentUser.getLevel())
                 .build();
 
@@ -226,7 +233,8 @@ public class GameService {
                 .gameMatchingResult(GameMatchingResponse.GameMatchingResult.SUCCESS)
                 .loginUser(loginUserGameInfoDto)
                 .opponentUser(opponentUserGameInfoDto)
-                .gameSubDestination("/topic/"+ gameId)
+                .gameId(gameId)
+                .gameSubDestination("/topic/game/"+ gameId)
                 .build();
 
 
@@ -235,7 +243,8 @@ public class GameService {
                 .gameMatchingResult(GameMatchingResponse.GameMatchingResult.SUCCESS)
                 .loginUser(opponentUserGameInfoDto)
                 .opponentUser(loginUserGameInfoDto)
-                .gameSubDestination("/topic/"+ gameId)
+                .gameId(gameId)
+                .gameSubDestination("/topic/game/"+ gameId)
                 .build();
 
         // 로그인 유저에게 매칭 성공 시점에 응답
@@ -253,43 +262,8 @@ public class GameService {
         return keySetsList.get(random.nextInt(keySetsList.size()));
     }
 
-    // 온 타임 에러 발생 시, 로그인 유저가 게임 매칭 취소 상태인 지 체크
-    private boolean isCancelStauts(Users loginUser) {
-
-        if (loginUser.getLevel() == NOVICE) {
-            // 게임 매칭 유저의 오목게임 수준이 "초보"
-            if (searchingNoviceUsers.containsKey(loginUser.getNickname())) {
-                // onTimeError
-                return false;
-            } else {
-                // Cancel
-                return true;
-            }
 
 
-        } else if (loginUser.getLevel() == IM) {
-            // 게임 매칭 유저의 오목게임 수준이 "중수"
-
-            if (searchingIMUsers.containsKey(loginUser.getNickname())) {
-                // onTimeError
-                return false;
-            } else {
-                // Cancel
-                return true;
-            }
-
-        } else {
-            // 게임 매칭 유저의 오목게임 수준이 "고수"
-
-            if (searchingAdvancedUsers.containsKey(loginUser.getNickname())) {
-                // onTimeError
-                return false;
-            } else {
-                // Cancel
-                return true;
-            }
-        }
-    }
 
 
 

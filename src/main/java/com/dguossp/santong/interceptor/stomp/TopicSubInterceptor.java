@@ -26,10 +26,9 @@ public class TopicSubInterceptor implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(command)) {
             log.info("[STOMP] CONN");
         } else if (StompCommand.SUBSCRIBE.equals(command)) {
-            // 1. [게임 찾기] 버튼 클릭 시, "____" 목적지 구독 요청
-            // 2. Redis Server에 게임 찾기 요청 보낸 유저의 상태 업데이트
             log.info("[STOMP] SUB");
-            log.info("STOMP HEADER : " + stompHeaderAccessor.getNativeHeader("test").get(0));
+        } else if (StompCommand.SEND.equals(command)) {
+            log.info("[STOMP] SEND");
         }
 
         return message;

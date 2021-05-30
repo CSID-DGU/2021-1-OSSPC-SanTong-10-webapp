@@ -1,11 +1,14 @@
 package com.dguossp.santong.controller.game;
 
-import com.dguossp.santong.dto.request.Greeting;
-import com.dguossp.santong.dto.request.HelloMessage;
-import com.dguossp.santong.dto.request.LoginDto;
+import com.dguossp.santong.dto.request.StompSendMessage;
 import com.dguossp.santong.dto.response.ApiResponseEntity;
 import com.dguossp.santong.dto.response.GameMatchingResponse;
-import com.dguossp.santong.repository.redis.RedisGameSearchRepository;
+import com.dguossp.santong.entity.GameRecords;
+import com.dguossp.santong.entity.Games;
+import com.dguossp.santong.entity.Users;
+import com.dguossp.santong.repository.GameRecordsRepository;
+import com.dguossp.santong.repository.GamesRepository;
+import com.dguossp.santong.repository.UsersRepository;
 import com.dguossp.santong.security.UserInformation;
 import com.dguossp.santong.service.game.GameService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.util.HtmlUtils;
-
-import javax.servlet.http.HttpSession;
 
 
 @Slf4j
@@ -31,17 +32,48 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private RedisGameSearchRepository gameSearchRepository;
+    private GameRecordsRepository gameRecordsRepository;
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
+    @Autowired
+    private GamesRepository gamesRepository;
 
-        // https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket-stomp-handle-annotations
-        // is serialized to a payload through a matching MessageConverter
-        // and sent as a Message to the brokerChannel, from where it is broadcast to subscribers.
-        return new Greeting("Hello (From GameController), " + HtmlUtils.htmlEscape(message.getName()) + "!");
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+    // https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket-stomp-handle-annotations
+    // is serialized to a payload through a matching MessageConverter
+    // and sent as a Message to the brokerChannel, from where it is broadcast to subscribers.
+
+    // Path variables in Spring WebSockets @SendTo mapping
+    // https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping
+    @MessageMapping("/place-stone/{gameId}")
+    @SendTo("/topic/game/{gameId}")
+    public void sendMessage(StompSendMessage sendMessage) {
+
+        // 1) 데이터 저장 (GameRecords Entity)
+        // 게임
+        // 로그인 유저
+        Games game = gamesRepository.findById(sendMessage.getGameId());
+
+        Users loginUser = usersRepository.findByNickname(sendMessage.getLoginUserNickname());
+
+        GameRecords gameRecords = GameRecords.builder()
+                .game(game)
+                .loginUser(loginUser)
+                .isFinish(sendMessage.getIsFinish())
+                .x(sendMessage.getX())
+                .y(sendMessage.getY())
+                .stoneStatus(sendMessage.getLoginUserTurn())
+                .build();
+
+        // [GameRecords to game_records] Database에 저장
+        gameRecordsRepository.save(gameRecords);
+
+        // 2) 각 클라이언트로 착수한 돌 정보 전송 ( 돌 상태, 좌표 값 전송 )
+        this.simpMessagingTemplate.convertAndSend("/topic/game/"+sendMessage.getGameId(), sendMessage);
+
     }
 
 
