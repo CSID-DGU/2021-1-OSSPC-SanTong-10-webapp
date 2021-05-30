@@ -23,14 +23,21 @@ function invalidCheck(){
     return true;
 }
 
+
 function fnCheckDuplicateNickname() {
     const nickname = document.querySelector("input[name=nickname]").value;
-    fetch('/api/auth/nickname-check/'+nickname).then(function (response) {
-        if (response.ok) {
-            return response.json();
-        }
-        return Promise.reject(response);
-    }).then(function (data) {
+    const data = { nickname: nickname };
+
+    fetch('/api/auth/nickname-check', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+
+    .then(res => res.json())
+    .then(function (data) {
         console.log(data);
         // 닉네임 중복확인 성공
         if (data?.statusCode == 1) {
@@ -43,23 +50,32 @@ function fnCheckDuplicateNickname() {
     });
 }
 
+
 function fnSignUp() {
     const nickname = document.querySelector("input[name=nickname]");
+    //JSON 형식으로 요청
+    var nickJson = new Object();
+    nickJson.nickname = nickname;
+
     fetch('/api/auth/nickname-check', {
         method: 'GET',
-        body: new URLSearchParams({nickname}),
-    }).then(function (response) {
-        if (response.ok) {
-            return response.json();
-        }
-        return Promise.reject(response);
-    }).then(function (data) {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(nickJson),
+    })
+
+    .then(res => res.json())
+    .then(function (data) {
         console.log(data);
         // 닉네임 중복확인 성공
         if (data?.statusCode == 1) {
             alert(data?.message);
-        } else { // 닉네임 중복확인 실패
+            // alert("사용가능한 아이디입니다.");
+        } else { // 닉네임 중복확인 실패 - 이미 사용중인 아이디
             alert(data.message);
+            // alert("이미 사용 중인 아이디입니다.")
+
         }
     }).catch(function (error) {
         console.warn(error);
@@ -68,21 +84,32 @@ function fnSignUp() {
 
 function init(){
     var form = document.querySelector("#signup");
+    var nickname = document.getElementById("loginId").value;
+    var password = document.getElementById("loginPw").value;
+    var level = document.querySelector("input[name=level]:checked").value;
+
+    //JSON 요청
+    var signupJson = new Object();
+    signupJson.nickname = nickname;
+    signupJson.password = password;
+    signupJson.level = level;
+
     form.addEventListener("submit",function(event){
         event.preventDefault();
         fetch('/api/auth/signup', {
             method: 'POST',
-            body: new URLSearchParams(new FormData(event.target)),
-        }).then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            return Promise.reject(response);
-        }).then(function (data) {
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(signupJson),
+        })
+
+        .then(res => res.json())
+        .then(function (data) {
             console.log(data);
             // 성공
             if (data?.statusCode == 200) {
-                window.location = "localhost:8080/login"
+                window.location = "/login"
             } else { // 실패
                 alert(data.message);
             }

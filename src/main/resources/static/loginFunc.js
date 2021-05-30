@@ -3,19 +3,33 @@ function init(){
     var form = document.querySelector("form");
     form.addEventListener("submit",function(event){
         event.preventDefault();
+
+        var nickname = document.getElementById("loginID").value;
+        var password = document.getElementById("Password").value;
+
+        console.log("로그인 아이디, 패스워드: " + nickname + "/ " + password);
+
+        //JSON 형식으로 요청
+       var loginJson = new Object();
+
+        loginJson.nickname = nickname;
+        loginJson.password = password;
+
         fetch('/api/auth/login', {
             method: 'POST',
-            body: new URLSearchParams(new FormData(event.target)),
-        }).then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            return Promise.reject(response);
-        }).then(function (data) {
-            console.log(data);
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(loginJson),
+        }).then(res => res.json()
+        ).then(function (data) {
+            // JSON.stringify : {"statusCode":200,"message":"로그인 성공","object":null}
+            console.log("로그인 성공 : " + JSON.stringify(data));
+            alert(" ");
+
             // 로그인 성공
-            if (data?.statusCode == 200) {
-                window.location = "localhost:8080/index"
+            if (data.statusCode == 200) {
+                window.location = "/index"
             } else { // 로그인 실패
                 alert(data.message);
             }
