@@ -42,14 +42,14 @@ public class AuthController {
             // 요청 닉네임으로 가입을 진행할 수 있는 경우
             apiResponseEntity = ApiResponseEntity.builder()
                     .statusCode(1)
-                    .message("요청 닉네임으로 회원가입이 가능한 경우")
+                    .message("사용가능한 아이디입니다.")
                     .object(null)
                     .build();
         } else {
             // 요청 닉네임으로 가입을 진행할 수 없는 경우
             apiResponseEntity = ApiResponseEntity.builder()
                     .statusCode(2)
-                    .message("요청 닉네임으로 회원가입이 불가능한 경우")
+                    .message("이미 사용중인 아이디입니다.")
                     .object(null)
                     .build();
         }
@@ -59,6 +59,10 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> doSignUp(@RequestBody SignUpDto signUpDto) {
+
+        log.info("nickname :" + signUpDto.getNickname());
+        log.info("pwd : " + signUpDto.getPassword());
+        log.info("lev : " + signUpDto.getLevel());
 
         // 회원가입 서비스 로직 호출
         // 예외 발생 시 해당 로직에서 처리
