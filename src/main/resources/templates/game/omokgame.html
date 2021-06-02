@@ -16,9 +16,9 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="gamesearch">메인 화면 :</label>
+                    <label id="labelforgame" for="gamesearch">메인 화면 :</label>
                     <button id="gamesearch" class="btn btn-default" type="submit">게임 매칭 요청</button>
-                    <button id="b" class="btn btn-default" type="submit">게임 매칭 요청 취소</button>
+                    <button id="cancelsearch" class="btn btn-default" type="submit">게임 매칭 요청 취소</button>
                 </div>
             </form>
         </div>
@@ -30,7 +30,7 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
+                    <label id="labelforconnect" for="connect">WebSocket connection:</label>
                     <button id="connect" class="btn btn-default" type="submit">Connect</button>
                     <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Cancel
                     </button>
@@ -42,7 +42,7 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="name">What is your name?</label>
+                    <label id="labelforname" for="name">What is your name?</label>
                     <input type="text" id="name" class="form-control" placeholder="Your name here...">
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
@@ -66,7 +66,8 @@
 
 <body>
 <div class="header">
-    <h1>Renju Omok</h1>
+    <h1 id="nickname">Renju Omok</h1>
+    <h1 id="oppo_nickname">Renju Omok</h1>
 </div>
 <div id="pos_board"></div>
 

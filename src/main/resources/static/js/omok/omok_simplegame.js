@@ -6,10 +6,11 @@ var g_turn_color = null;
 var g_board = gen_board();
 var g_renju = new Renju(g_board);
 
-
-// set event
+// 225 개의 위치에 모두 1 (= ALLOWED) 상태로 지정하고,
+// 클릭 이벤트가 있을 때마다, 착수 정보 오브젝트를 STOMP SEND를 서버 측에 전송한다.
+// 서버 측에서는 메시지 핸들러를 통해 해당 게임방을 구독하고 있는 유저들에게 착수된 데이터를 재전송한다.
 var g_allowed = {};
-for(var i=0; i < 15; i++){
+for (var i=0; i < 15; i++) {
     for(var j=0; j < 15; j++){
 
         var ids = i + '_' + j;
@@ -20,6 +21,19 @@ for(var i=0; i < 15; i++){
             // -> 웹 소켓 수신 이벤
             pos.addEventListener('click',function() {
 
+                // '흑돌 선'으로 지정하기 위해서, 게임 시작 후 백돌이 먼저 수를 두는 경우를 체크.
+                var count = 0;
+                for (var key in g_allowed){
+                    if (g_allowed[key] == 1) {
+                        count++;
+                    }
+                    if (count == 225) {
+                        if (loginUserTurn == WHITE) {
+                            alert("흑돌 선 입니다.");
+                            return;
+                        }
+                    }
+                }
 
                 // 착수하는 유저의 '턴'이 아닌 경우 -> Alert 띄우기
                 // 착수 시점 이후에, g_turn_color 가 상대방이 착수 이전인 경우 아직 변하지 않는다.
@@ -56,13 +70,10 @@ for(var i=0; i < 15; i++){
                 stoneObject.loginUserTurn = loginUserTurn;
                 stoneObject.opponentUserTurn = opponentUserTurn;
 
-                // 제한 시간 초과 (30) 되는 경우, 둘 수 있는 곳 중, 랜덤으로 착수한 후, STOMP SEND
-                // setTimeout() ->
 
 
 
-
-
+                // JSON object 중, 착수할 좌표 값만 새로 받아와서 STOMP SEND Frame 전송
                 if (g_allowed[ids] == WIN) {
                     // 해당 위치에 '수'를 놓는 경우 게임이 끝나는 경우 (결정 수인 경우)
                     // 서버 측에 게임 종료된 시점에도 동일하게 데이터 전송.
@@ -70,28 +81,17 @@ for(var i=0; i < 15; i++){
                     var y = parseInt(t[0]);
                     var x = parseInt(t[1]);
 
-                    alert(x + " WIN " + y + " 클릭!");
-
                     stoneObject.isFinish = 2;
                     stoneObject.x = x;
                     stoneObject.y = y;
                     stompClient.send("/app/place-stone/"+gameId, {} ,JSON.stringify(stoneObject));
-
-                    // [STOMP] 서버에 착수한 수의 정보를 포함한 부대 정보 전송
-                    // 유저 고유 ID 또는 닉네임
-                    // 게임 고유 ID
-                    // 흑 또는 백돌 상태
-                    // X, Y 좌표 값
-
                 }
 
                 else if (g_allowed[ids] == ALLOWED) {
                     // 해당 위치에 '수'를 놓는 경우 게임이 계속 진행되는 경우 (결정 수가 아닌 경우)
-
                     var t = ids.split('_');
                     var y = parseInt(t[0]);
                     var x = parseInt(t[1]);
-                    alert(x + " ALLOWED " + y + " 클릭!");
 
                     stoneObject.isFinish = 1;
                     stoneObject.x = x;
@@ -110,7 +110,14 @@ function chk_turn_board() {
         for (var j=0; j < 15; j++) {
             var ids = i + '_' + j;
             var pos = document.getElementById(ids);
-            var result = g_renju.chk_rules(j, i, g_turn_color);
+            // 각 턴별로 Result -> 룰에 의해 둘 수 없는 곳, 허용되는 곳, 게임 위닝 샷을 나눈다.
+            // 단, 착수 후 턴의 색이 구별되므로, 착수 시점 이후에는 상대방 턴 기준으로 결과 값을 추출해야 한다.
+            var result = null;
+            if (g_turn_color == BLACK) {
+                result = g_renju.chk_rules(j, i, WHITE);
+            } else {
+                result = g_renju.chk_rules(j, i, BLACK);
+            }
 
             if (result == NOT_ALLOWED) {
                 g_allowed[ids] = NOT_ALLOWED;
@@ -136,11 +143,8 @@ function chk_turn_board() {
             }
         }
     }
-    console.log("g_allowed : " + g_allowed);
-    for (var key in g_allowed){
-        // 1 중에서 랜덤으로 하나 픽해서 시간 초과하는 경우 그 곳에 돌 놓기.
-        console.log("attr: " + key + ", value: " + g_allowed[key]);
-    }
 }
-
+// 최초, 오목판 로드 됐을 때 호출 (-> 모든 위치에 착수할 수 있는 상태)
 chk_turn_board();
+
+
