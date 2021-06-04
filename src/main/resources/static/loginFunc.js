@@ -4,8 +4,8 @@ function init(){
     form.addEventListener("submit",function(event){
         event.preventDefault();
 
-        var nickname = document.getElementById("loginID").value;
-        var password = document.getElementById("Password").value;
+        var nickname = document.getElementById("loginId").value;
+        var password = document.getElementById("loginPw").value;
 
         console.log("로그인 아이디, 패스워드: " + nickname + "/ " + password);
 
@@ -23,7 +23,6 @@ function init(){
             body: JSON.stringify(loginJson),
         }).then(res => res.json()
         ).then(function (data) {
-            // JSON.stringify : {"statusCode":200,"message":"로그인 성공","object":null}
             console.log("로그인 성공 : " + JSON.stringify(data));
             alert(" ");
 
@@ -38,5 +37,5 @@ function init(){
         });
     });
 }
-//window의 load이벤트 발생 감시
+
 window.addEventListener("load", init);
