@@ -5,6 +5,9 @@ import com.dguossp.santong.dto.response.GameMatchingResponse;
 import com.dguossp.santong.dto.response.UserGameInfoDto;
 import com.dguossp.santong.entity.Games;
 import com.dguossp.santong.entity.Users;
+import com.dguossp.santong.exception.AuthException;
+import com.dguossp.santong.exception.GameException;
+import com.dguossp.santong.exception.code.ErrorCode;
 import com.dguossp.santong.repository.GamesRepository;
 import com.dguossp.santong.repository.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -107,6 +110,19 @@ public class GameService {
         // 지정한 게임 매칭 요청 시간이 초과한 경우 (예외 처리) -> 클라이언트 측에 (유저에게) "게임 매칭에 실패 했습니다. 다시 시도해주세요" 안내.
         deferredResult.onTimeout(() -> {
 
+            // 매칭 대기열에서 삭제
+            if (loginUser.getLevel() == NOVICE) {
+                log.info("로그인 유저 오목 게임 수준 : [초보]");
+                searchingNoviceUsers.remove(username);
+
+            } else if (loginUser.getLevel() == IM) {
+                log.info("로그인 유저 오목 게임 수준 : [중수]");
+                searchingIMUsers.remove(username);
+            } else {
+                log.info("로그인 유저 오목 게임 수준 : [고수]");
+                searchingAdvancedUsers.remove(username);
+            }
+
             // 게임 매칭결과 응답 초기화
             GameMatchingResponse gameMatchingResponse;
 
@@ -117,8 +133,6 @@ public class GameService {
             deferredResult.setErrorResult(gameMatchingResponse);
         });
 
-        // 게임 매칭 과정에서 예외 발생하는 경우 (예외 처리) -> 클라이언트 측에 예외에 따라서 안내
-        // 추후 추가.
 
     }
 
@@ -150,16 +164,11 @@ public class GameService {
                     .gameMatchingResult(GameMatchingResponse.GameMatchingResult.CANCEL)
                     .build();
 
+        // NPE 체크
+        if (loginUserDeferredResult == null) throw new GameException("게임 매칭 대기열에서 매칭 취소한 유저를 찾을 수 없는 경우", ErrorCode.NOTFOUNDUSER_EXCEPTION);
         loginUserDeferredResult.setResult(gameMatchingResponse);
 
     }
-
-    public void sendMessage() {
-
-    }
-
-
-
 
 
     private void doMatchingGame(String username, Map<String, DeferredResult<GameMatchingResponse>> deferredResultMap) {
