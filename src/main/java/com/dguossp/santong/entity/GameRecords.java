@@ -45,18 +45,23 @@ public class GameRecords {
     // 1 : 흑돌, 2 : 백돌
     private int stoneStatus;
 
+    // 금수 위치 좌표 리스트 [(a, b), (c,d) ... ]
+    private String unallowedList;
+
+
     // 유저가 착수한 일시
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdDatetime;
 
     @Builder
-    public GameRecords(Games game, Users loginUser, int x, int y, int isFinish, int stoneStatus) {
+    public GameRecords(Games game, Users loginUser, int x, int y, int isFinish, String unallowedList, int stoneStatus) {
         this.game = game;
         this.loginUser = loginUser;
         this.x = x;
         this.y = y;
         this.isFinish = isFinish;
+        this.unallowedList = unallowedList;
         this.stoneStatus = stoneStatus;
     }
 

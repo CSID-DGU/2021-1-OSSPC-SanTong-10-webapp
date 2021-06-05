@@ -25,9 +25,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index").setViewName("index.html");
+
+        // 로그인
         registry.addViewController("/login").setViewName("account/login.html");
+
+        // 회원가입
         registry.addViewController("/signup").setViewName("account/signup.html");
-        registry.addViewController("/game").setViewName("game/omokgame.html");
+
+        // 게임 (게임 찾기, 게임 중, 게임 종료)
+        registry.addViewController("/game").setViewName("game/in-game.html");
+
+        // 복기 페이지
+        registry.addViewController("/review-game").setViewName("game/review-game.html");
     }
 
 
