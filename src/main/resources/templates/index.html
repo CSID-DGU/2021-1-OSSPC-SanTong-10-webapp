@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="utf-8">
-    <title>Webapp</title>
-    <link rel="stylesheet" href="/css/mainStyle.css">
+    <title>Omok Webapp</title>
+    <link rel="stylesheet" href="/css/omokStyle.css">
+    <link rel="stylesheet" href="/css/utilStyle.css">
 </head>
 
 <body>
@@ -12,8 +14,15 @@
 </div>
 <div id="pos_board"></div>
 <div id="status_bar" class="header"></div>
-<!--<script src="/omok.js"></script>-->
-<!--<script src="/omok_renju.js"></script>-->
-<!--<script src="/omok_simplegame.js"></script>-->
+<div id="buttons" class="panel">
+    <button class="button" id="findGame" onclick="findGame();">게임 찾기</button>
+    <button class="button" id="findingGame" onclick="findingGame();" style="display:none;">게임 찾는 중...</button><br/>
+    <button class="button distance white" id="cancel" onclick="cancel();" style="display:none;">취소</button>
+    <button class="button green" id="gameIng" onclick="gameIng();" style="display:none;">게임 진행 중</button>
+</div>
+<script src="/js/omokgame/omok_board.js"></script>
+<script src="/js/omokgame/omok_renju.js"></script>
+<script src="/js/omokgame/omok_game.js"></script>
+<script src="/util.js"></script>
 </body>
 </html>
