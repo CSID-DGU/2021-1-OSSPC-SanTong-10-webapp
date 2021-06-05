@@ -2,6 +2,7 @@ package com.dguossp.santong.exception.handler;
 
 import com.dguossp.santong.dto.response.ErrorResponse;
 import com.dguossp.santong.exception.AuthException;
+import com.dguossp.santong.exception.GameException;
 import com.dguossp.santong.exception.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,17 +31,25 @@ public class ControllerExceptionHandler {
 
         if (ex instanceof BadCredentialsException) {
             errorResponse = ErrorResponse.of(ErrorCode.BADCREDENTIALS_EXCEPTION);
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
 
         if (ex instanceof UsernameNotFoundException) {
             errorResponse = ErrorResponse.of(ErrorCode.USERNAMENOTFOUND_EXCEPTION);
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
 
         if (ex instanceof AuthException) {
             errorResponse = ErrorResponse.of(ErrorCode.UNAUTHORIZED_EXCEPTION);
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        if (ex instanceof GameException) {
+            errorResponse = ErrorResponse.of(ErrorCode.NOTFOUNDUSER_EXCEPTION);
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        return null;
     }
 
 }

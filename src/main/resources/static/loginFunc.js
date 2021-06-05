@@ -24,11 +24,10 @@ function init(){
         }).then(res => res.json()
         ).then(function (data) {
             console.log("로그인 성공 : " + JSON.stringify(data));
-            alert(" ");
 
             // 로그인 성공
             if (data.statusCode == 200) {
-                window.location = "/index"
+                window.location = "/game"
             } else { // 로그인 실패
                 alert(data.message);
             }
