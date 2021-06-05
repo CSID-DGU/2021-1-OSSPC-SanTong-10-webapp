@@ -65,6 +65,7 @@ public class GameController {
                 .isFinish(sendMessage.getIsFinish())
                 .x(sendMessage.getX())
                 .y(sendMessage.getY())
+                .unallowedList("금수 위치 좌표 리스트 넣기!")
                 .stoneStatus(sendMessage.getLoginUserTurn())
                 .build();
 
