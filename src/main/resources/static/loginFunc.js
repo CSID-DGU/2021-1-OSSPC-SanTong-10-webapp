@@ -27,7 +27,7 @@ function init(){
 
             // 로그인 성공
             if (data.statusCode == 200) {
-                window.location = "/game"
+                window.location = "/index"
             } else { // 로그인 실패
                 alert(data.message);
             }
