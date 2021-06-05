@@ -4,8 +4,6 @@
     transition: 0.5s all;
 }
 
-a { text-decoration: none }
-
 button{
     cursor: pointer;
 }
@@ -104,7 +102,7 @@ button{
     color: #fff;
     border: 1px solid #000;
 }
-#signup button #btnDoublecheck:hover{
+#signup button#btnDoublecheck:hover{
     background-color:#fff;
     color:#000;
     border: 1px solid #000;
@@ -145,7 +143,3 @@ button{
     background: #fff;
     color: #000;
 }
-/* .can_btn:hover{
-    background: #000;
-    color: #fff;
-} */
