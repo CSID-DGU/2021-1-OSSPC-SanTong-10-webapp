@@ -1,11 +1,15 @@
 package com.dguossp.santong.entity;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  [] GameRecords 객체 -> 게임 정보를 가지고와서 상대 유저 정보 탐색
@@ -15,8 +19,10 @@ import java.time.LocalDateTime;
  *
  * */
 
+@ToString
 @Entity
 @Table(name = "game_records")
+@Getter
 @NoArgsConstructor
 public class GameRecords {
 
@@ -47,6 +53,9 @@ public class GameRecords {
 
     // 금수 위치 좌표 리스트 [(a, b), (c,d) ... ]
     private String unallowedList;
+
+    // AI 분석 결과 좌표 & 승률 리스트 [X&Y&Rate ... ]
+    private String reviewList;
 
 
     // 유저가 착수한 일시

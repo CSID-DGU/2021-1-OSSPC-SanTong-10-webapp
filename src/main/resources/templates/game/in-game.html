@@ -6,7 +6,29 @@
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/game/main.css" rel="stylesheet">
     <link href="/css/game/omok.css" rel="stylesheet">
+    <link href="/css/utilStyle.css" rel="stylesheet">
     <title>Renju Omok</title>
+    <style>
+        #container {
+            display: flex;
+        }
+        #box-left {
+            margin-left: 40px;
+            background: #ffffff;
+            flex: 1;
+        }
+        #box-center {
+            background: #ffffff;
+            flex: 3;
+            text-align: center;
+        }
+        #box-right {
+            margin-right: 40px;
+            background: #ffffff;
+            flex: 1;
+            text-align: right;
+        }
+    </style>
 
 </head>
 
@@ -65,11 +87,37 @@
 </div>
 
 <body>
+
+
+
+
 <div class="header">
-    <h1 id="nickname">Renju Omok</h1>
-    <h1 id="oppo_nickname">Renju Omok</h1>
+    <h1>Renju Omok</h1>
 </div>
-<div id="pos_board"></div>
+<br>
+<br>
+
+<div id='container'>
+    <div id='box-left'>
+        <h2 id="login-nickname">로그인 유저</h2>
+        <h2 id="nickname">5초</h2>
+    </div>
+    <div id='box-center'>
+        <div class="child" id="pos_board"></div>
+    </div>
+
+    <div id='box-right'>
+        <h2 id="oppo-nickname">상대 유저</h2>
+        <h2 id="oppo_nickname">5초</h2>
+    </div>
+</div>
+
+<div id="buttons" class="panel">
+    <button class="button" id="findGame" onclick="findGame();">게임 찾기</button>
+    <button class="button" id="findingGame" onclick="findingGame();" style="display:none;">게임 찾는 중...</button><br/>
+    <button class="button distance white" id="cancel" onclick="cancel();" style="display:none;">취소</button>
+    <button class="button green" id="gameIng" onclick="gameIng();" style="display:none;">게임 진행 중</button>
+</div>
 
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
@@ -79,6 +127,8 @@
 <script src="/js/game/omok_renju.js"></script>
 <script src="/js/game/game_ws.js" charset="UTF-8"></script>
 <script src="/js/game/omok_simplegame.js"></script>
+<script src="/util.js"></script>
+
 
 </body>
 </html>
