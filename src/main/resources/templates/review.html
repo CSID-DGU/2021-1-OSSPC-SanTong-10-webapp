@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>Omok</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/utilStyle.css">
+</head>
+<body>
+<div style="float: none; margin-left: 520px;">
+    <h1>복기페이지</h1>
+</div>
+<div >
+    <div id="pos_board2" class="grid" style="float: left; margin-left: 200px;" ></div>
+    <div id="pos_board3" class="grid" style="float: left; " ></div>
+</div>
+<div id="buttons" class="panel" style="margin-top: 10px;float: left;margin-left: 110px; " >
+    <button class="button2 yellow" style="width: 160px; border-radius: 30px;" >&lt; 이전 수</button>
+    <button class="button2"   style="width: 160px; border-radius: 30px;">   다음 수 > </button>
+</div>
+<script src="js/omok_board.js"></script>
+<script src="js/omok_game.js"></script>
+<script src="js/util.js"></script>
+</body>
+
+<script>
+    /* API 호출 */
+    function getUser(){
+        fetch('/api/auth/profile', {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: '',
+        }).then(res => res.json()
+        ).then(function (data) {
+            console.log("유저 조회 성공 : " + JSON.stringify(data));
+
+            // 유저 조회 성공
+            if (data.statusCode == 2) {
+                userJson.nickname = data.object.nickname;
+            } else { // 실패
+                alert(data.message);
+            }
+        }).catch(function (error) {
+            console.warn(error);
+        });
+    }
+</script>
+</html>
+<style>
+    .grid {
+        max-width: 660px;
+        margin:0 auto;
+    }
+</style>
