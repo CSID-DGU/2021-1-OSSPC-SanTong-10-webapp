@@ -2,6 +2,8 @@ package com.dguossp.santong.dto.request;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class StompSendMessage {
 
@@ -23,6 +25,9 @@ public class StompSendMessage {
     private int x;
     // 착수한 돌 Y 좌표
     private int y;
+
+    // 금수 위치 좌표 리스트 [(a, b), (c,d) ... ]
+    private List<String> unallowedList;
 
     // 승부 결정 수 (= 결정 수)
     // 1 : ~결정수 , 2 : 결정수

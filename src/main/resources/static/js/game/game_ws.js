@@ -10,7 +10,7 @@ var gameId = null;
 // 게임 시작 전 대기 (5초)
 var getReadyForGame = 5;
 // 각 턴별로 제한 시간 (30초)
-var getTimeByTurn = 10;
+var getTimeByTurn = 5;
 
 
 
@@ -86,14 +86,16 @@ function gameSearch() {
 
                 // 로그인 유저 고유 닉네임
                 loginUser = res_loginUser.nickname;
-                var temp_title = document.getElementById("nickname");
-                temp_title.innerText = loginUser;
+                var login_nickname = document.getElementById("login-nickname");
+                login_nickname.innerText = loginUser;
 
                 // 로그인 유저 돌 상태
                 loginUserTurn = res_loginUser.turn;
 
                 // 게임 상대 유저 고유 닉네임
                 opponentUser = res_opponentUser.nickname;
+                var oppo_nickname = document.getElementById("oppo-nickname")
+                oppo_nickname.innerText = opponentUser
 
                 // 게임 상대 유저의 돌 상태
                 opponentUserTurn = res_opponentUser.turn;
@@ -241,6 +243,8 @@ function msg_time(stoneStatus) {
         if (stoneStatus == loginUserTurn) {
             // 착수 가능한 위치 좌표를 가지고 있는 리스트
             var arr_available = new Array();
+            // 금수 좌표를 가지고 있는 리스트
+            var arr_unavailable = new Array();
             // 랜덤 위치에 착수
             // chk_turn_board() -> 를 통해서 g_board 상태 중 착수할 수 있는 위치가 최신화 (최초, 각 유저가 착수하는 시점)
             for (var key in g_allowed){
@@ -250,11 +254,15 @@ function msg_time(stoneStatus) {
                 if (g_allowed[key] == 1) {
                     arr_available.push(key);
                 }
+
+                if (g_allowed[key] == 2) {
+                    arr_unavailable.push(key);
+                }
             }
             // 착수 가능한 위치 좌표를 가지고 있는 리스트 인덱스 수 내에서 랜덤 수를 활용해서,
             // 지정한 시간 초과했을 경우, 랜덤한 위치에 착수할 좌표 값 추출
             var ran_X_Y = arr_available[Math.floor(Math.random() * arr_available.length)];
-            // X, Y 파싱, ex) x_y "_" 로 슬라이싱
+            // X, Y 파싱, ex) x_y "_" 로 슬라이싱 (ex : 7_8)
             var arr_ran_X_Y = ran_X_Y.split("_");
 
             var stoneObject = new Object();
@@ -271,6 +279,7 @@ function msg_time(stoneStatus) {
             stoneObject.gameId = gameId;
             stoneObject.loginUserTurn = loginUserTurn;
             stoneObject.opponentUserTurn = opponentUserTurn;
+            stoneObject.unallowedList = arr_unavailable
 
             // 랜덤으로 착수할 때는 항상 착수 가능한 지역 중 게임을 끝내지 않도록 설정
             stoneObject.isFinish = 1;
