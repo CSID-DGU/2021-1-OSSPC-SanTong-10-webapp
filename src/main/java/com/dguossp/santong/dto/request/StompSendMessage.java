@@ -29,6 +29,10 @@ public class StompSendMessage {
     // 금수 위치 좌표 리스트 [(a, b), (c,d) ... ]
     private List<String> unallowedList;
 
+    // 유저의 착수 시점, 직전 판의 상태
+    // 예를 들어, 전체 오목판 기준, 3번째 돌 착수하는 경우(흑입장) --> 흑(1), 백(2) 좌표 값 리스트
+    private List<String> prevStateList;
+
     // 승부 결정 수 (= 결정 수)
     // 1 : ~결정수 , 2 : 결정수
     private int isFinish;

@@ -79,26 +79,26 @@ for (var i=0; i < 15; i++) {
                 // 금수 좌표를 가지고 있는 리스트
                 var arr_unavailable = new Array();
                 for (var key in g_allowed) {
-                    // console.log(key + " : "  + g_allowed[key]);
-                    if (g_allowed[key] == 0) {
-                        console.log("g_allowed[key] : " + key);
+                    if (g_allowed[key] == NOT_ALLOWED) {
                         arr_unavailable.push(key);
                     }
                 }
-                stoneObject.unallowedList = arr_unavailable
+                stoneObject.unallowedList = arr_unavailable;
 
                 // 직전 좌표까지 저장
                 var arr_prevState = new Array();
-                console.log(typeof g_board);
-                console.log(typeof g_allowed);
-                for (var key in g_board) {
-
-
-                    // if (g_board[key] == BLACK || g_board[key] == WHITE) {
-                    //     console.log("g_board[key] : " + key);
-                    //     arr_prevState.push(key);
-                    // }
+                for (var keys in g_board) {
+                    console.log(keys + " : " + g_board[keys]);
+                    for (var key in g_board[keys]) {
+                        // key 0 ~ 14
+                        if (g_board[keys][key] == BLACK || g_board[keys][key] == WHITE) {
+                            console.log(keys + ", " + key);
+                            arr_prevState.push(keys + "_" + key);
+                        }
+                    }
                 }
+                stoneObject.prevStateList = arr_prevState;
+
 
 
                 // JSON object 중, 착수할 좌표 값만 새로 받아와서 STOMP SEND Frame 전송
@@ -155,6 +155,7 @@ function chk_turn_board() {
 
             }
             if (result == WIN ) {
+                console.log("이기는 수");
                 g_allowed[ids] = WIN;
             }
 
@@ -165,14 +166,23 @@ function chk_turn_board() {
             if (g_board[i][j] == WHITE) {
                 pos.className = 'white_stone';
             }
-            // draw red (금수 위치)
-            // 화이트 입장에서 금수
-            if (g_board[i][j] == EMPTY && result == NOT_ALLOWED && g_turn_color==BLACK) {
-                pos.className = 'red_stone';
+
+            // 화이트 입장에서, 착수 했을 때, 금수 --> 낫 금수
+            if (g_board[i][j] == EMPTY && result == ALLOWED && g_turn_color==WHITE) {
+                if (pos.className == 'black_not-allowed_stone') {
+                    pos.className = 'get_allowed_stone';
+                }
+            }
+
+            // 블랙 입장에서, 착수 했을 때 금수 --> 낫 금수
+            if (g_board[i][j] == EMPTY && result == ALLOWED && g_turn_color==BLACK) {
+                if (pos.className == 'black_not-allowed_stone') {
+                    pos.className = 'get_allowed_stone';
+                }
             }
             // 블랙 입장에서 금수
             if (g_board[i][j] == EMPTY && result == NOT_ALLOWED && g_turn_color==WHITE) {
-                pos.className = 'blue_stone';
+                pos.className = 'black_not-allowed_stone';
             }
         }
     }

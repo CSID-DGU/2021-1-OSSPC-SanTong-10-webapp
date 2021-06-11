@@ -264,6 +264,20 @@ function msg_time(stoneStatus) {
                     arr_unavailable.push(key);
                 }
             }
+            // 직전 좌표까지 저장
+            var arr_prevState = new Array();
+            for (var keys in g_board) {
+                console.log(keys + " : " + g_board[keys]);
+                for (var key in g_board[keys]) {
+                    // key 0 ~ 14
+                    if (g_board[keys][key] == BLACK || g_board[keys][key] == WHITE) {
+                        console.log(keys + ", " + key);
+                        arr_prevState.push(keys + "_" + key);
+                    }
+                }
+            }
+
+
             // 착수 가능한 위치 좌표를 가지고 있는 리스트 인덱스 수 내에서 랜덤 수를 활용해서,
             // 지정한 시간 초과했을 경우, 랜덤한 위치에 착수할 좌표 값 추출
             var ran_X_Y = arr_available[Math.floor(Math.random() * arr_available.length)];
@@ -285,6 +299,7 @@ function msg_time(stoneStatus) {
             stoneObject.loginUserTurn = loginUserTurn;
             stoneObject.opponentUserTurn = opponentUserTurn;
             stoneObject.unallowedList = arr_unavailable
+            stoneObject.prevStateList = arr_prevState;
 
             // 랜덤으로 착수할 때는 항상 착수 가능한 지역 중 게임을 끝내지 않도록 설정
             stoneObject.isFinish = 1;

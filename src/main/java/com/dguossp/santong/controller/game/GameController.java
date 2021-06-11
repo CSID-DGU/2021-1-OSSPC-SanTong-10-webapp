@@ -56,8 +56,6 @@ public class GameController {
     @SendTo("/topic/game/{gameId}")
     public void sendMessage(StompSendMessage sendMessage) {
 
-        log.error("X : " + sendMessage.getX() + " Y : " + sendMessage.getY());
-
 
         // 1) 데이터 저장 (GameRecords Entity)
         // 게임
@@ -72,9 +70,6 @@ public class GameController {
 
         Users loginUser = usersRepository.findByNickname(sendMessage.getLoginUserNickname());
 
-
-
-
         GameRecords gameRecords = GameRecords.builder()
                 .game(game)
                 .loginUser(loginUser)
@@ -82,6 +77,7 @@ public class GameController {
                 .x(sendMessage.getX())
                 .y(sendMessage.getY())
                 .unallowedList(sendMessage.getUnallowedList().toString())
+                .prevStateList(sendMessage.getPrevStateList().toString())
                 .stoneStatus(sendMessage.getLoginUserTurn())
                 .build();
 

@@ -64,7 +64,7 @@ function gen_html_board(elem){
                 cross_h.className = 'cross_h_right';
             }
             stone.className = 'empty_stone_white';
-            stone.id = i +'_' + j;
+            stone.id = i +'^' + j;
             colElem.appendChild(cross_h);
             colElem.appendChild(cross_v);
             colElem.appendChild(stone);
