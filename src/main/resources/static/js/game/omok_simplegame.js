@@ -21,6 +21,11 @@ for (var i=0; i < 15; i++) {
             // -> 웹 소켓 수신 이벤
             pos.addEventListener('click',function() {
 
+                if (loginUser == null) {
+                    alert("게임 시작 전 입니다.");
+                    return;
+                }
+
                 // '흑돌 선'으로 지정하기 위해서, 게임 시작 후 백돌이 먼저 수를 두는 경우를 체크.
                 var count = 0;
                 for (var key in g_allowed){
@@ -71,6 +76,29 @@ for (var i=0; i < 15; i++) {
                 stoneObject.opponentUserTurn = opponentUserTurn;
 
 
+                // 금수 좌표를 가지고 있는 리스트
+                var arr_unavailable = new Array();
+                for (var key in g_allowed) {
+                    // console.log(key + " : "  + g_allowed[key]);
+                    if (g_allowed[key] == 0) {
+                        console.log("g_allowed[key] : " + key);
+                        arr_unavailable.push(key);
+                    }
+                }
+                stoneObject.unallowedList = arr_unavailable
+
+                // 직전 좌표까지 저장
+                var arr_prevState = new Array();
+                console.log(typeof g_board);
+                console.log(typeof g_allowed);
+                for (var key in g_board) {
+
+
+                    // if (g_board[key] == BLACK || g_board[key] == WHITE) {
+                    //     console.log("g_board[key] : " + key);
+                    //     arr_prevState.push(key);
+                    // }
+                }
 
 
                 // JSON object 중, 착수할 좌표 값만 새로 받아와서 STOMP SEND Frame 전송
@@ -137,9 +165,14 @@ function chk_turn_board() {
             if (g_board[i][j] == WHITE) {
                 pos.className = 'white_stone';
             }
-            // draw red
-            if (g_board[i][j] == EMPTY && result == NOT_ALLOWED) {
+            // draw red (금수 위치)
+            // 화이트 입장에서 금수
+            if (g_board[i][j] == EMPTY && result == NOT_ALLOWED && g_turn_color==BLACK) {
                 pos.className = 'red_stone';
+            }
+            // 블랙 입장에서 금수
+            if (g_board[i][j] == EMPTY && result == NOT_ALLOWED && g_turn_color==WHITE) {
+                pos.className = 'blue_stone';
             }
         }
     }

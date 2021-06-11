@@ -19,6 +19,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -27,6 +28,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
+
+    private static final int GAME_OVER = 2;
 
     @Autowired
     private GameService gameService;
@@ -48,16 +51,29 @@ public class GameController {
 
     // Path variables in Spring WebSockets @SendTo mapping
     // https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping
+    @Transactional
     @MessageMapping("/place-stone/{gameId}")
     @SendTo("/topic/game/{gameId}")
     public void sendMessage(StompSendMessage sendMessage) {
+
+        log.error("X : " + sendMessage.getX() + " Y : " + sendMessage.getY());
+
 
         // 1) 데이터 저장 (GameRecords Entity)
         // 게임
         // 로그인 유저
         Games game = gamesRepository.findById(sendMessage.getGameId());
+        // 게임 종료 조건 시, Games 테이블의 상태 값 변경 (게임 종료 상태)
+        if (sendMessage.getIsFinish() == GAME_OVER) {
+            log.error("게임 종료");
+            log.error("GameId : " + game.getId() + " 게임 결정 수 : " + sendMessage.getIsFinish());
+            game.setGameStatus(GAME_OVER);
+        }
 
         Users loginUser = usersRepository.findByNickname(sendMessage.getLoginUserNickname());
+
+
+
 
         GameRecords gameRecords = GameRecords.builder()
                 .game(game)

@@ -13,18 +13,18 @@
             display: flex;
         }
         #box-left {
+            border: 1px solid darkgoldenrod;
             margin-left: 40px;
-            background: #ffffff;
             flex: 1;
         }
         #box-center {
-            background: #ffffff;
+            border: 1px solid darkgoldenrod;
             flex: 3;
             text-align: center;
         }
         #box-right {
+            border: 1px solid darkgoldenrod;
             margin-right: 40px;
-            background: #ffffff;
             flex: 1;
             text-align: right;
         }
@@ -32,83 +32,28 @@
 
 </head>
 
-<div id="main-content" class="container">
-    <div class="row">
-
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label id="labelforgame" for="gamesearch">메인 화면 :</label>
-                    <button id="gamesearch" class="btn btn-default" type="submit">게임 매칭 요청</button>
-                    <button id="cancelsearch" class="btn btn-default" type="submit">게임 매칭 요청 취소</button>
-                </div>
-            </form>
-        </div>
-
-        <br>
-        <br>
-        <br>
-
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label id="labelforconnect" for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-
-
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label id="labelforname" for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Greetings</th>
-                </tr>
-                </thead>
-                <tbody id="greetings">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<body>
-
-
-
+<body style="background-color: #ffffff">
 
 <div class="header">
-    <h1>Renju Omok</h1>
+    <h1>산통깨지마 오목</h1>
 </div>
 <br>
 <br>
 
 <div id='container'>
-    <div id='box-left'>
-        <h2 id="login-nickname">로그인 유저</h2>
-        <h2 id="nickname">5초</h2>
+    <div id='box-left' style="display: none;">
+        <h2 id="login-nickname" style="text-align: center;">로그인 유저</h2>
+        <h2 style="text-align: center;">시간 제한 : </h2>
+        <h2 id="nickname" style="text-align: center;">30초</h2>
     </div>
     <div id='box-center'>
         <div class="child" id="pos_board"></div>
     </div>
 
-    <div id='box-right'>
-        <h2 id="oppo-nickname">상대 유저</h2>
-        <h2 id="oppo_nickname">5초</h2>
+    <div id='box-right' style="display: none;">
+        <h2 id="oppo-nickname" style="text-align: center;">상대 유저</h2>
+        <h2 style="text-align: center;">시간 제한 : </h2>
+        <h2 id="oppo_nickname" style="text-align: center;">30초</h2>
     </div>
 </div>
 
@@ -116,8 +61,12 @@
     <button class="button" id="findGame" onclick="findGame();">게임 찾기</button>
     <button class="button" id="findingGame" onclick="findingGame();" style="display:none;">게임 찾는 중...</button><br/>
     <button class="button distance white" id="cancel" onclick="cancel();" style="display:none;">취소</button>
-    <button class="button green" id="gameIng" onclick="gameIng();" style="display:none;">게임 진행 중</button>
+    <button class="button green" id="gameIng" style="display:none;">게임 진행 중</button>
+
+    <button class="buttonend" id="findGame2" onclick="location.href='/game'" style="display:none;">메인 화면</button>
+    <button class="buttonend yellow" id="review" onclick="review();" style="display:none;">복기하기</button>
 </div>
+
 
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
@@ -127,7 +76,7 @@
 <script src="/js/game/omok_renju.js"></script>
 <script src="/js/game/game_ws.js" charset="UTF-8"></script>
 <script src="/js/game/omok_simplegame.js"></script>
-<script src="/util.js"></script>
+<script src="/js/util.js"></script>
 
 
 </body>

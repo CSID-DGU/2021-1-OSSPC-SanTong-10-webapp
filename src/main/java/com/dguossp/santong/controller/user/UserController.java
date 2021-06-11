@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 
-    @GetMapping("/profile")
+    @GetMapping(value = "/profile")
     public ResponseEntity<?> doFetchProfile(Authentication authentication) {
+        log.info("doFetchProfile() is called");
 
         ApiResponseEntity apiResponseEntity;
 

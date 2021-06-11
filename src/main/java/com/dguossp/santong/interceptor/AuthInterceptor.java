@@ -29,29 +29,35 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 클라이언트 요청(Request)에 포함된 쿠키 값 조회 (-> JSESSIONID 값 찾는 목적)
         Cookie[] cookies = request.getCookies();
 
-        for (Cookie cookie : cookies) {
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
 
-            if (cookie.getName().equals("JSESSIONID")) {
-                // 로그인 상태로 요청한 경우 -> (SecurityContextHolder <- Authentication 설정)
-                // 인터셉터 통과하는 요청 (= 인증 요청)에 대해서 쿠키가 있는 경우
-                HttpSession session = request.getSession();
-                // NPE (요청한 쿠키 값에 매핑되는 세션이 없는 경우)
-                Authentication authentication = (Authentication) session.getAttribute(session.getId());
+                if (cookie.getName().equals("JSESSIONID")) {
+                    // 로그인 상태로 요청한 경우 -> (SecurityContextHolder <- Authentication 설정)
+                    // 인터셉터 통과하는 요청 (= 인증 요청)에 대해서 쿠키가 있는 경우
+                    HttpSession session = request.getSession();
+                    // NPE (요청한 쿠키 값에 매핑되는 세션이 없는 경우)
+                    Authentication authentication = (Authentication) session.getAttribute(session.getId());
 
-                if (authentication == null) {
+                    if (authentication == null) {
 
-                    // 비로그인 상태로 회원정보 조회 요청한 경우 -> 이 경우에는 Interceptor 통과
-                    if (request.getRequestURI().equals(API_USER_PROFILE)) return true;
+                        // 비로그인 상태로 회원정보 조회 요청한 경우 -> 이 경우에는 Interceptor 통과
+                        if (request.getRequestURI().equals(API_USER_PROFILE)) return true;
 
-                    // 인증이 요구되는 API 요청하는 경우 -> 세션 만료 에러 반환
-                    throw new AuthException("세션 만료", ErrorCode.UNAUTHORIZED_EXCEPTION);
+                        // 인증이 요구되는 API 요청하는 경우 -> 세션 만료 에러 반환
+                        throw new AuthException("세션 만료", ErrorCode.UNAUTHORIZED_EXCEPTION);
+                    }
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    return true;
                 }
+            } // for loop
+        }
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                return true;
-            }
-        } // for loop
+        // 세션 쿠키가 없어도, 인증 필요 없는 경우 통과
+        if (request.getRequestURI().equals(API_USER_PROFILE)) return true;
 
+        throw new AuthException("세션 만료", ErrorCode.UNAUTHORIZED_EXCEPTION);
 
         // CustomException (extending RuntimeException)에 대한 핸들러를 정의하지 않은 경우
         // org.springframework.web.util.NestedServletException: Request processing failed
@@ -108,7 +114,5 @@ public class AuthInterceptor implements HandlerInterceptor {
         //
         //</html>
 
-        // DownStream 서비스 로직 전개
-        return false;
     }
 }
