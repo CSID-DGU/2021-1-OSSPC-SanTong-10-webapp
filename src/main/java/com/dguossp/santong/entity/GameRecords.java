@@ -57,6 +57,10 @@ public class GameRecords {
     // AI 분석 결과 좌표 & 승률 리스트 [X&Y&Rate ... ]
     private String reviewList;
 
+    // 유저의 착수 시점, 직전 판의 상태
+    // 예를 들어, 전체 오목판 기준, 3번째 돌 착수하는 경우(흑입장) --> 흑(1), 백(2) 좌표 값 리스트
+    private String prevStateList;
+
 
     // 유저가 착수한 일시
     @CreationTimestamp
@@ -64,13 +68,14 @@ public class GameRecords {
     private LocalDateTime createdDatetime;
 
     @Builder
-    public GameRecords(Games game, Users loginUser, int x, int y, int isFinish, String unallowedList, int stoneStatus) {
+    public GameRecords(Games game, Users loginUser, int x, int y, int isFinish, String unallowedList, String prevStateList, int stoneStatus) {
         this.game = game;
         this.loginUser = loginUser;
         this.x = x;
         this.y = y;
         this.isFinish = isFinish;
         this.unallowedList = unallowedList;
+        this.prevStateList = prevStateList;
         this.stoneStatus = stoneStatus;
     }
 

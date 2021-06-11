@@ -21,9 +21,5 @@ function cancel(){
     });
 }
 
-function gameIng(){
-    alert('게임 진행 중입니다.');
-    return false;
-}
-
+// 복기 페이지 (왼쪽 오목판 / 오른쪽 오목판=AI 기반 분석)
 

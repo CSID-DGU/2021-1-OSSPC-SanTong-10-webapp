@@ -87,13 +87,22 @@
     background: white;
     border: 1px solid black;
 }
-.red_stone {
+.black_not-allowed_stone {
     position: absolute;
     width: 90%;
     height: 90%;
     border-radius: 50%;
-    border: 1px solid red;
+    border: 1px solid #ff0000;
 }
+
+.get_allowed_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    border: transparent;
+}
+
 .empty_stone_white {
     position: absolute;
     width: 100%;
@@ -134,10 +143,11 @@
     background-color: RGBA(0,106,255,1);
 }
 
-
-
 .header {
     width: 50%;
     margin: 0 auto;
     text-align:  center;
 }
+
+/** 인덱스 들어갈 돌 여기에 추가해주세요 */
+
