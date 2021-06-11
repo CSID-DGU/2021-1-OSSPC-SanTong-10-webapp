@@ -87,13 +87,22 @@
     background: white;
     border: 1px solid black;
 }
+.blue_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    border: 1px solid #002aff;
+}
+
 .red_stone {
     position: absolute;
     width: 90%;
     height: 90%;
     border-radius: 50%;
-    border: 1px solid red;
+    border: 1px solid #ff0000;
 }
+
 .empty_stone_white {
     position: absolute;
     width: 100%;

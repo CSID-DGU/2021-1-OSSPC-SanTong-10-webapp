@@ -1,7 +1,8 @@
 .panel {
     font: 16px "Open Sans", Helvetica, Arial, sans-serif;
     padding: 12px;
-    width: 500px;
+    /*width: 500px;*/
+    width: auto;
     text-align: center;
     left: 40%;
     margin: 0 auto;
@@ -26,6 +27,23 @@
     border-radius: 5px;
 }
 
+.buttonend {
+    font: 22px "Open Sans", Helvetica, Arial, sans-serif;
+    padding: 5px 36px;
+    background-color : #0099FF;
+    color : #FFFFFF;
+    border-color:#000000;
+    width : 190px;
+    height: 80px;
+    border-radius: 5px;
+}
+
+.yellow{
+    background-color:#f5bf0d;
+}
+
+
+
 .green {
     background-color:#0fc70f;
 }
@@ -41,12 +59,4 @@
 
 .distance {
     margin-top: 10px;
-}
-
-.hide {
-    display: none;
-}
-
-.block {
-    display: "";
 }

@@ -80,8 +80,7 @@ public class GameService {
     @Async("threadPoolTaskExecutor")
     public void onAsyncTask(String username, DeferredResult<GameMatchingResponse> deferredResult) {
         log.info("[1] onAsyncTask() Start");
-
-
+        log.info("로그인 유저 네임 : " + username);
         // [1] 유저의 오목 게임 수준에 따라서 게임 상대를 지정한다. (닉네임 정보를 통해 '유저' 객체 탐색 -> 유저의 오목 게임 수준 조회)
         Users loginUser = usersRepository.findByNickname(username);
 

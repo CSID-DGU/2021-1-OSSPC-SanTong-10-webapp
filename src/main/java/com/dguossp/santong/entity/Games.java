@@ -64,4 +64,8 @@ public class Games {
         this.participantB = participantB;
     }
 
+    public void setGameStatus(int gameStatus) {
+        this.gameStatus = gameStatus;
+    }
+
 }
