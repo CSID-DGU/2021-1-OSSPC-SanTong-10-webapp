@@ -13,7 +13,7 @@ var g_allowed = {};
 for (var i=0; i < 15; i++) {
     for(var j=0; j < 15; j++){
 
-        var ids = i + '_' + j;
+        var ids = i + '&' + j;
         var pos = document.getElementById(ids);
         g_allowed[ids] = true;
 
@@ -80,6 +80,7 @@ for (var i=0; i < 15; i++) {
                 var arr_unavailable = new Array();
                 for (var key in g_allowed) {
                     if (g_allowed[key] == NOT_ALLOWED) {
+                        console.log("key : " + key);
                         arr_unavailable.push(key);
                     }
                 }
@@ -91,9 +92,9 @@ for (var i=0; i < 15; i++) {
                     console.log(keys + " : " + g_board[keys]);
                     for (var key in g_board[keys]) {
                         // key 0 ~ 14
-                        if (g_board[keys][key] == BLACK || g_board[keys][key] == WHITE) {
-                            console.log(keys + ", " + key);
-                            arr_prevState.push(keys + "_" + key);
+                        if (g_board[key][keys] == BLACK || g_board[key][keys] == WHITE) {
+                            // y(key), x(keys)
+                            arr_prevState.push(key + "_" + keys + "_" + g_board[key][keys]);
                         }
                     }
                 }
@@ -105,7 +106,7 @@ for (var i=0; i < 15; i++) {
                 if (g_allowed[ids] == WIN) {
                     // 해당 위치에 '수'를 놓는 경우 게임이 끝나는 경우 (결정 수인 경우)
                     // 서버 측에 게임 종료된 시점에도 동일하게 데이터 전송.
-                    var t = ids.split('_');
+                    var t = ids.split('&');
                     var y = parseInt(t[0]);
                     var x = parseInt(t[1]);
 
@@ -117,7 +118,7 @@ for (var i=0; i < 15; i++) {
 
                 else if (g_allowed[ids] == ALLOWED) {
                     // 해당 위치에 '수'를 놓는 경우 게임이 계속 진행되는 경우 (결정 수가 아닌 경우)
-                    var t = ids.split('_');
+                    var t = ids.split('&');
                     var y = parseInt(t[0]);
                     var x = parseInt(t[1]);
 
@@ -136,7 +137,7 @@ function chk_turn_board() {
 
     for (var i=0; i < 15; i++) {
         for (var j=0; j < 15; j++) {
-            var ids = i + '_' + j;
+            var ids = i + '&' + j;
             var pos = document.getElementById(ids);
             // 각 턴별로 Result -> 룰에 의해 둘 수 없는 곳, 허용되는 곳, 게임 위닝 샷을 나눈다.
             // 단, 착수 후 턴의 색이 구별되므로, 착수 시점 이후에는 상대방 턴 기준으로 결과 값을 추출해야 한다.

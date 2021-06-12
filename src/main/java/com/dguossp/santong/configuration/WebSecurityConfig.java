@@ -21,7 +21,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity(debug = false)
-@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean

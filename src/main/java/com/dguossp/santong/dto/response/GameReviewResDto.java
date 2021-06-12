@@ -12,10 +12,6 @@ import java.util.List;
 @Getter
 public class GameReviewResDto {
 
-    // 맨 처음 또는 맨 뒤 상태 플래그
-    // 1 : 맨 처음, 2 : 맨 뒤
-    private int flag;
-
     // 사이즈 (-> 이전, 다음 상태 이동의 기준)
     private int size;
 
