@@ -10,6 +10,7 @@ var gameId = null;
 // 각 턴별로 제한 시간 (30초)
 var getTimeByTurn = 30;
 
+// 회원 정보 조회 시 응답 데이터
 var userInfo = null;
 
 
@@ -256,11 +257,11 @@ function msg_time(stoneStatus) {
                 // 1 중에서 랜덤으로 하나 픽해서 시간 초과하는 경우 그 곳에 돌 놓기.
                 console.log("키 : " + key + ", 값 : " + g_allowed[key]);
                 // 착수할 수 있는 위치 조건 (1 = 착수 가능)
-                if (g_allowed[key] == 1) {
+                if (g_allowed[key] == ALLOWED) {
                     arr_available.push(key);
                 }
 
-                if (g_allowed[key] == 2) {
+                if (g_allowed[key] == NOT_ALLOWED) {
                     arr_unavailable.push(key);
                 }
             }
@@ -270,9 +271,9 @@ function msg_time(stoneStatus) {
                 console.log(keys + " : " + g_board[keys]);
                 for (var key in g_board[keys]) {
                     // key 0 ~ 14
-                    if (g_board[keys][key] == BLACK || g_board[keys][key] == WHITE) {
-                        console.log(keys + ", " + key);
-                        arr_prevState.push(keys + "_" + key);
+                    if (g_board[key][keys] == BLACK || g_board[key][keys] == WHITE) {
+                        // y(key), x(keys)
+                        arr_prevState.push(key + "_" + keys + "_" + g_board[key][keys]);
                     }
                 }
             }
@@ -282,7 +283,7 @@ function msg_time(stoneStatus) {
             // 지정한 시간 초과했을 경우, 랜덤한 위치에 착수할 좌표 값 추출
             var ran_X_Y = arr_available[Math.floor(Math.random() * arr_available.length)];
             // X, Y 파싱, ex) x_y "_" 로 슬라이싱 (ex : 7_8)
-            var arr_ran_X_Y = ran_X_Y.split("_");
+            var arr_ran_X_Y = ran_X_Y.split("&");
 
             var stoneObject = new Object();
             // String loginUserNickname
@@ -303,8 +304,8 @@ function msg_time(stoneStatus) {
 
             // 랜덤으로 착수할 때는 항상 착수 가능한 지역 중 게임을 끝내지 않도록 설정
             stoneObject.isFinish = 1;
-            stoneObject.x = arr_ran_X_Y[0];
-            stoneObject.y = arr_ran_X_Y[1];
+            stoneObject.x = arr_ran_X_Y[1];
+            stoneObject.y = arr_ran_X_Y[0];
 
             // SEND (= 착수)
             stompClient.send("/app/place-stone/"+gameId, {} ,JSON.stringify(stoneObject));

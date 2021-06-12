@@ -8,8 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *  [] GameRecords 객체 -> 게임 정보를 가지고와서 상대 유저 정보 탐색

@@ -87,6 +87,28 @@
     background: white;
     border: 1px solid black;
 }
+
+/* 임시 - 유저가 놓은 수 (초록색)*/
+.green_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background: #76ba23;
+    border: 1px solid black;
+}
+
+/* 임시 - 추천 받은 수 (노란색)*/
+.noran_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background: #f5f109;
+    border: 1px solid black;
+}
+
+
 .black_not-allowed_stone {
     position: absolute;
     width: 90%;

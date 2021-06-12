@@ -68,6 +68,9 @@
     <button class="button3" style="width: 160px; border-radius: 30px;" onclick="location.href='/game'">   종료 </button>
 </div>
 
+<button class="button2 yellow" onclick="prevButton();" style="width: 160px; border-radius: 30px;">&lt; 이전 수</button>
+<button class="button2" onclick="nextButton();"  style="width: 160px; border-radius: 30px;">   다음 수 > </button>
+
 <div class="panel bottom" style="margin-top: 10px;float: left;border-style: solid;border-color: #FAAC58;text-align:center;" >
 	<span>
 		<span class="green-circle" style="width:60px;height:60px;"><img src="game/image/green.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
@@ -90,17 +93,19 @@
 		<span class="orange-green-circle" style="width:15px;height:15px;"><img src="game/image/orange_check.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
 		<span>실제 User의 착수 위치 = Top 2~4 확률 위치</span>
 	</span>
+
 </div>
 
 <script src="/webjars/jquery/jquery.min.js"></script>
-
-<script src="/js/util.js"></script>
 
 <script src="/js/omokgame/omok_board.js"></script>
 <script src="/js/omokgame/omok_game.js"></script>
 
 <script src="/js/reviewgame/omok_board.js"></script>
 <script src="/js/reviewgame/omok_game.js"></script>
+
+<script src="/js/review.js"></script>
+
 
 </body>
 </html>

@@ -63,8 +63,6 @@ public class GameController {
         Games game = gamesRepository.findById(sendMessage.getGameId());
         // 게임 종료 조건 시, Games 테이블의 상태 값 변경 (게임 종료 상태)
         if (sendMessage.getIsFinish() == GAME_OVER) {
-            log.error("게임 종료");
-            log.error("GameId : " + game.getId() + " 게임 결정 수 : " + sendMessage.getIsFinish());
             game.setGameStatus(GAME_OVER);
         }
 
