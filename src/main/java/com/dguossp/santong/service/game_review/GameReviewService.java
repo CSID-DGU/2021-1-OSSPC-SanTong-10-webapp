@@ -209,8 +209,6 @@ public class GameReviewService {
                 compareReviewDataList.add(reviewDataStrArray[i]);
             }
 
-            // ',' 를 기준으로 배열형태로 변환 (via split)
-            String[] arr_xAndyAndrate = xAndyAndrate.split(",");
 
 
             // 리뷰 데이터에서 삭제 처리할 데이터 인덱스 리스트
@@ -231,12 +229,22 @@ public class GameReviewService {
 
             }
 
+            // ',' 를 기준으로 배열형태로 변환 (via split) (review_list)
+            String[] arr_xAndyAndrate = xAndyAndrate.split(",");
+
             // 금수 = 리뷰 인 인덱스 값을 통해 해당 요소 리뷰 데이터 리스트에서 삭제
             for (int i = 0; i < removeIndexList.size(); i++) {
                 compareReviewDataList.remove(i);
+                remove(i, arr_xAndyAndrate);
             }
 
+            log.info("금수 위치 제외한 복기 데이터 리스트 : " + compareReviewDataList.toString());
             log.info("금수 위치 제외한 복기 데이터 리스트 사이즈 : " + compareReviewDataList.size());
+
+            // ['8&6&89', '9&5&7', '5&9&0', '10&5&0', '8&4&0', '9&8&0', '9&4&0', '7&5&0', '7&6&0', '8&5&0']
+            for (int i = 0; i < arr_xAndyAndrate.length; i++) {
+                log.info("금수 위치 제외 배열 각 요소 값 : " + arr_xAndyAndrate[i]);
+            }
 
 
             // Top 4를 제공 (금수 위치 제외하고 Top 4가 안 되는 경우, 복기 데이터 사이즈만큼만 제공)
@@ -255,46 +263,51 @@ public class GameReviewService {
             // 그 좌표 값(Top 2~4)이 실제 유저가 놓은 좌표 값과 동일하지 않은 경우 -> Flag 3 ()
             for (int i = 0; i < serviceSize; i++) {
 
-                // 각 요소 별로 --> x, y, rate 파싱
-                String[] arr_xyrate = arr_xAndyAndrate[i].split("&");
+                // NPE 체크
+                if (arr_xAndyAndrate[i] != null) {
+                    // 각 요소 별로 --> x, y, rate 파싱
+                    String[] arr_xyrate = arr_xAndyAndrate[i].split("&");
 
-                // 유저가 놓은 수와 비교를 통해 flag 값 지정
-                int flag = REVIEW_FLAG_INIT;
+                    // 유저가 놓은 수와 비교를 통해 flag 값 지정
+                    int flag = REVIEW_FLAG_INIT;
 
-                // 1) (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일한 경우
-                if (i == 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
-                    flag = REVIEW_TOP_SAME;
+                    // 1) (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일한 경우
+                    if (i == 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
+                        flag = REVIEW_TOP_SAME;
+                    }
+
+                    // (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일하지 않은 경우
+                    if (i == 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
+                        flag = REVIEW_TOP_NOT_SAME;
+                    }
+
+                    if (i != 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
+                        flag = REVIEW_NOT_TOP_SAME;
+                    }
+
+                    if (i != 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
+                        flag = REVIEW_NOT_TOP_NOT_SAME;
+                    }
+
+
+                    // 가장 마지막 수 (= size)의 돌 상태 값 -> 해당 상태 값을 기준으로 복기 분석 제공
+                    GameReviewDto gameReviewDto = GameReviewDto.builder()
+                            .x(Integer.valueOf(arr_xyrate[0]))
+                            .y(Integer.valueOf(arr_xyrate[1]))
+                            .winningRate(Integer.valueOf(arr_xyrate[2]))
+                            .flag(flag)
+                            .build();
+
+                    gameReviewList.add(gameReviewDto);
                 }
 
-                // (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일하지 않은 경우
-                if (i == 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
-                    flag = REVIEW_TOP_NOT_SAME;
-                }
-
-                if (i != 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
-                    flag = REVIEW_NOT_TOP_SAME;
-                }
-
-                if (i != 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
-                    flag = REVIEW_NOT_TOP_NOT_SAME;
-                }
-
-
-                // 가장 마지막 수 (= size)의 돌 상태 값 -> 해당 상태 값을 기준으로 복기 분석 제공
-                GameReviewDto gameReviewDto = GameReviewDto.builder()
-                        .x(Integer.valueOf(arr_xyrate[0]))
-                        .y(Integer.valueOf(arr_xyrate[1]))
-                        .winningRate(Integer.valueOf(arr_xyrate[2]))
-                        .flag(flag)
-                        .build();
-
-                gameReviewList.add(gameReviewDto);
             }
 
         }
 
         // 복기 페이지 요청에 대한 최종 응답
         GameReviewResDto gameReviewResDto = GameReviewResDto.builder()
+                .username(username)
                 .size(size)
                 .gameRecordList(gameRecordsList)
                 .gameReviewRecordsList(gameReviewList)
@@ -420,6 +433,7 @@ public class GameReviewService {
     public void remove(int index, String[] array) {
         for (int i = index; i < array.length-1; i++) {
             array[i] = array[i+1];
+            array[i+1] = null;
         }
     }
 

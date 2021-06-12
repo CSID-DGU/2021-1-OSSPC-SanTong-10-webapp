@@ -38,6 +38,7 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                  "message" : "복기 페이지 데이터 응답",
                  "object" :
                  {
+                     "username" : 유저 닉네임 (복기 페이지 상단 렌더링)
                      "size" : the-size-of-gameRecordList,
                      "gameRecordList" :
                          [
@@ -63,23 +64,25 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
              }
              * */
             var resReviewApi = JSON.parse(JSON.stringify(data));
-            console.log('API(/api/game-review) 응답 : ' + JSON.stringify(data));
+            // console.log('API(/api/game-review) 응답 : ' + JSON.stringify(data));
             var resReviewApiObject = JSON.parse(JSON.stringify(resReviewApi.object));
-            console.log('resReviewApiObject : ' + JSON.stringify(resReviewApiObject));
-            console.log("size : " + resReviewApiObject.size);
-            console.log("gameRecordList :" + JSON.stringify(resReviewApiObject.gameRecordList));
+            // console.log('resReviewApiObject : ' + JSON.stringify(resReviewApiObject));
+            // console.log("size : " + resReviewApiObject.size);
+            // console.log("gameRecordList :" + JSON.stringify(resReviewApiObject.gameRecordList));
+
+            // 복기 페이지 상단 유저 닉네임 출력
+            document.getElementById("username").innerText = resReviewApiObject.username + " 님";
 
             // 현재 오목판 수에 표현된 사이즈
             current_size = resReviewApiObject.size;
-            console.log("현재 사이즈 : " + current_size);
 
             // for loop
             var gameRecordList = JSON.parse(JSON.stringify(resReviewApiObject.gameRecordList));
             for (var i = 0; i < gameRecordList.length; i++) {
 
-                console.log("i.x : " + gameRecordList[i].x);
-                console.log("i.y : " + gameRecordList[i].y);
-                console.log(("i.stoneStatus : " + gameRecordList[i].stoneStatus));
+                // console.log("i.x : " + gameRecordList[i].x);
+                // console.log("i.y : " + gameRecordList[i].y);
+                // console.log(("i.stoneStatus : " + gameRecordList[i].stoneStatus));
 
                 // 오목판 돌 Draw
                 /** FROM [omok_game.js] */
@@ -111,7 +114,7 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 }
             }
 
-            console.log("gameReviewRecordList :" + JSON.stringify(resReviewApiObject.gameReviewRecordsList));
+            // console.log("gameReviewRecordList :" + JSON.stringify(resReviewApiObject.gameReviewRecordsList));
             var gameReviewRecordList = JSON.parse(JSON.stringify(resReviewApiObject.gameReviewRecordsList));
             /**
              {
@@ -133,10 +136,10 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
 
             for (var i = 0; i < gameReviewRecordList.length; i ++) {
 
-                console.log("i.x : " + gameReviewRecordList[i].x);
-                console.log("i.y : " + gameReviewRecordList[i].y);
-                console.log("i.winningRate : " + gameReviewRecordList[i].winningRate);
-                console.log("i.flag : " + gameReviewRecordList[i].flag);
+                // console.log("i.x : " + gameReviewRecordList[i].x);
+                // console.log("i.y : " + gameReviewRecordList[i].y);
+                // console.log("i.winningRate : " + gameReviewRecordList[i].winningRate);
+                // console.log("i.flag : " + gameReviewRecordList[i].flag);
 
                 // 각 Element의 Flag 값에 따라서 돌 색상이 달라진다.
                 // 유저가 놓은 수와 겹치는 경우, Overwrite 한다.
@@ -145,27 +148,25 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 var flag = gameReviewRecordList[i].flag;
 
                 if (flag == REVIEW_TOP_SAME) {
-                    // 노란색
-                    position_right.className = 'noran_stone';
+                    // 파란색 체크 무늬
+                    position_right.className = 'blue_check_stone';
                 }
 
                 if (flag == REVIEW_TOP_NOT_SAME) {
                     // 파란색
-                    position_right.className = 'noran_stone';
+                    position_right.className = 'blue_stone';
                 }
 
                 if (flag == REVIEW_NOT_TOP_SAME) {
-                    // 주황색
-                    position_right.className = 'noran_stone';
+                    // 주황색 체크 무늬
+                    position_right.className = 'orange_check_stone';
                 }
 
                 if (flag == REVIEW_NOT_TOP_NOT_SAME) {
-                    // 빨간색
-                    position_right.className = 'noran_stone';
+                    // 주황색
+                    position_right.className = 'orange_stone';
                 }
             }
-            // for loop
-            // 오른쪽 오목판에 돌 Draw (OverWrite) - 복기 데이터 승률 데이터 렌더링
 
         })
         .fail((data) => {

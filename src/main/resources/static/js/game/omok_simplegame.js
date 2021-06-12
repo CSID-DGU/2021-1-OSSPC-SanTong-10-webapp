@@ -54,11 +54,11 @@ for (var i=0; i < 15; i++) {
                 // 게임 고유 ID
                 // 흑 또는 백돌 상태
                 // X, Y 좌표 값
-                console.log("[ALLOWED] 로그인 유저 (= 착수한 유저) : " + loginUser);
-                console.log("[ALLOWED] 게임 상대 유저  : " + opponentUser);
-                console.log("[ALLOWED] 게임 고유 ID : " + gameId);
-                console.log("[ALLOWED] 로그인 유저 (= 착수한 유저)의 돌 상태 : " + loginUserTurn);
-                console.log("[ALLOWED] 게임 상대 유저의 돌 상태 : " + opponentUserTurn);
+                // console.log("[ALLOWED] 로그인 유저 (= 착수한 유저) : " + loginUser);
+                // console.log("[ALLOWED] 게임 상대 유저  : " + opponentUser);
+                // console.log("[ALLOWED] 게임 고유 ID : " + gameId);
+                // console.log("[ALLOWED] 로그인 유저 (= 착수한 유저)의 돌 상태 : " + loginUserTurn);
+                // console.log("[ALLOWED] 게임 상대 유저의 돌 상태 : " + opponentUserTurn);
 
                 var stoneObject = new Object();
                 // String loginUserNickname

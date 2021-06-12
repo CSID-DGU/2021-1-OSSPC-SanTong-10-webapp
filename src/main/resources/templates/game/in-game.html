@@ -31,7 +31,7 @@
         .black_not-allowed_inform{
             text-align: center;
             position: relative;
-            top: 180px;
+            top: 100px;
             visibility: hidden;
         }
         .ref-circle{
@@ -55,9 +55,10 @@
 <div id='container'>
     <div id='box-left' style="display: none;">
         <h2 id="login-nickname" style="text-align: center;">로그인 유저</h2>
-        <h2 style="text-align: center;">시간 제한 : </h2>
-        <h2 id="nickname" style="text-align: center;">30초</h2>
-        <h4 class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h4>
+        <h3 style="text-align: center;">시간 제한 : </h3>
+        <h3 id="nickname" style="text-align: center;">30초</h3>
+        <h3 id="game_result_left" style="color: #aa0000; text-align: center;"></h3>
+        <h5 id="ban-sign-left" class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h5>
     </div>
     <div id='box-center'>
         <div class="child" id="pos_board"></div>
@@ -65,9 +66,10 @@
 
     <div id='box-right' style="display: none;">
         <h2 id="oppo-nickname" style="text-align: center;">상대 유저</h2>
-        <h2 style="text-align: center;">시간 제한 : </h2>
-        <h2 id="oppo_nickname" style="text-align: center;">30초</h2>
-        <h4 class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h4>
+        <h3 style="text-align: center;">시간 제한 : </h3>
+        <h3 id="oppo_nickname" style="text-align: center;">30초</h3>
+        <h3 id="game_result_right" style="color: #aa0000; text-align: center;"></h3>
+        <h5 id="ban-sign-right" class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h5>
     </div>
 </div>
 
