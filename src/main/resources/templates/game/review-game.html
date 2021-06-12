@@ -25,29 +25,52 @@
             border: 1px solid darkgoldenrod;
             flex: 5;
         }
-        .panel{
-            text-align : center;
-        }
 
-        .button3{
+        .button3 {
             font: 22px "Open Sans", Helvetica, Arial, sans-serif;
             padding: 3px 31px;
             background-color:  #808080;
             color: #000000;
             border-color:#000000;
-            border-radius: 5px;
-            position:relative;
-            left: 500px;
+            width: 110px;
+            border-radius: 10px;
         }
 
-        .bottom{
-            font: 22px "Open Sans", Helvetica, Arial, sans-serif;
+        .textbox {
+            font: 18px "Open Sans", Helvetica, Arial, sans-serif;
             border-color:#000000;
             border-radius: 5px;
-            position:relative;
-            top:50%;
-            left:25%;
+            position: absolute;
+            border-style: solid;
+            border-color: darkgoldenrod;
+            left : 15%;
+            text-align: center;
+            width: 70%;
+            margin-top: 50px;
         }
+
+        .image-circle{
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
+
+        .parent {
+            display: flex;
+            padding: 6px;
+        }
+
+        .parent .child{
+            flex: 1;
+            text-align: center;
+        }
+
+        .parent .child2{
+            flex: 1;
+            text-align: right;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 
@@ -62,36 +85,41 @@
     <div id="omok-right"></div>
 </div>
 
-<div id="buttons" class="panel" style="margin-top: 10px;float: left;margin-left: 110px; " >
-    <button class="button2 yellow" onclick="prevButton();" style="width: 160px; border-radius: 30px;">&lt; 이전 수</button>
-    <button class="button2" onclick="nextButton();"  style="width: 160px; border-radius: 30px;">   다음 수 > </button>
-    <button class="button3" style="width: 160px; border-radius: 30px;" onclick="location.href='/game'">종료 </button>
+<div class='parent'>
+    <div class='child left'></div>
+    <div class='child center'>
+        <div id="buttons" style="margin-top: 10px;width: 100%;text-align: center;" >
+            <button class="button2 yellow" style="width: 160px; border-radius: 30px;" >&lt; 이전 수</button>
+            <button class="button2"   style="width: 160px; border-radius: 30px;">   다음 수 > </button>
+        </div>
+    </div>
+    <div class='child2 right'>
+        <button class="button3" onclick="location.href='/game'"> 종료 </button>
+    </div>
 </div>
 
-
-<div class="panel bottom" style="margin-top: 10px;float: left;border-style: solid;border-color: #FAAC58;text-align:center;" >
+<div class="textbox" >
 	<span>
-		<span class="green-circle" style="width:60px;height:60px;"><img src="game/image/green.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
+		<span class="circle" style="width:60px;height:60px;"><img class="image-circle" src="game/image/green.png"></span>
 		<span>실제 User의 착수 위치</span>
 	</span> &nbsp;&nbsp;&nbsp;
     <span>
-		<span class="blue-circle" style="width:15px;height:15px;"><img src="game/image/blue.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
+		<span class="circle" style="width:15px;height:15px;"><img class="image-circle" src="game/image/blue.png"></span>
 		<span>가장 높은 확률 위치</span>
 	</span> &nbsp;&nbsp;
     <span>
-		<span class="orange-circle" style="width:15px;height:15px;"><img src="game/image/orange.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
+		<span class="circle" style="width:15px;height:15px;"><img class="image-circle" src="game/image/orange.png"></span>
 		<span>Top 2~4 확률 위치</span>
 	</span><br/><br/>
 
     <span>
-		<span class="green-circle" style="width:15px;height:15px;"><img src="game/image/blue_check.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
-		<span>실제 User의 착수 위치 =  가장 높은 확률 위치</span>
+		<span class="circle" style="width:15px;height:15px;"><img class="image-circle" src="game/image/blue_check.png"></span>
+		<span>실제 User의 착수 위치 = 가장 높은 확률 위치</span>
 	</span>&nbsp;&nbsp;&nbsp;
     <span>
-		<span class="orange-green-circle" style="width:15px;height:15px;"><img src="game/image/orange_check.png" width="25px;" height="25px;" style="vertical-align:middle;"></span>
+		<span class="circle" style="width:15px;height:15px;"><img class="image-circle" src="game/image/orange_check.png"></span>
 		<span>실제 User의 착수 위치 = Top 2~4 확률 위치</span>
 	</span>
-
 </div>
 
 <script src="/webjars/jquery/jquery.min.js"></script>
