@@ -93,8 +93,8 @@
     position: absolute;
     width: 90%;
     height: 90%;
-    border-radius: 50%;
-    background: #76ba23;
+    /*border-radius: 50%;*/
+    background-image: url(" /game/image/blue.png ");
     border: 1px solid black;
 }
 
@@ -103,8 +103,8 @@
     position: absolute;
     width: 90%;
     height: 90%;
-    border-radius: 50%;
-    background: #f5f109;
+    /*border-radius: 50%;*/
+    background-image: url( "game/image/green.png" );
     border: 1px solid black;
 }
 
