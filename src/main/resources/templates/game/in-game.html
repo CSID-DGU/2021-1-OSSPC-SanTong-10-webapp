@@ -7,7 +7,7 @@
     <link href="/css/game/main.css" rel="stylesheet">
     <link href="/css/game/omok.css" rel="stylesheet">
     <link href="/css/utilStyle.css" rel="stylesheet">
-    <title>Renju Omok</title>
+    <title>SanTong Omok</title>
     <style>
         #container {
             display: flex;
@@ -28,6 +28,18 @@
             flex: 1;
             text-align: right;
         }
+        .black_not-allowed_inform{
+            text-align: center;
+            position:relative;
+            top: 180px;
+            visibility: hidden;
+        }
+        .ref-circle{
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid #ff0000;
+        }
     </style>
 
 </head>
@@ -45,6 +57,7 @@
         <h2 id="login-nickname" style="text-align: center;">로그인 유저</h2>
         <h2 style="text-align: center;">시간 제한 : </h2>
         <h2 id="nickname" style="text-align: center;">30초</h2>
+        <h4 class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h4>
     </div>
     <div id='box-center'>
         <div class="child" id="pos_board"></div>
@@ -54,6 +67,7 @@
         <h2 id="oppo-nickname" style="text-align: center;">상대 유저</h2>
         <h2 style="text-align: center;">시간 제한 : </h2>
         <h2 id="oppo_nickname" style="text-align: center;">30초</h2>
+        <h4 class="black_not-allowed_inform"><span class="ref-circle">&nbsp;&nbsp;&nbsp;&nbsp;</span> 흑돌 기준 금수 </h4>
     </div>
 </div>
 
