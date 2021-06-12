@@ -88,23 +88,58 @@
     border: 1px solid black;
 }
 
-/* 임시 - 유저가 놓은 수 (초록색)*/
+/* 실제 유저의 착수 위치 (초록색) */
 .green_stone {
     position: absolute;
     width: 90%;
     height: 90%;
-    /*border-radius: 50%;*/
-    background-image: url(" /game/image/blue.png ");
+    border-radius: 50%;
+    background-image: url(" /game/image/green.png ");
+    background-size: cover;
     border: 1px solid black;
 }
 
-/* 임시 - 추천 받은 수 (노란색)*/
-.noran_stone {
+/* AI 모델이 가장 높은 확률로 착수할 위치 (파란색) */
+.blue_stone {
     position: absolute;
     width: 90%;
     height: 90%;
-    /*border-radius: 50%;*/
-    background-image: url( "game/image/green.png" );
+    border-radius: 50%;
+    background-size: cover;
+    background-image: url( "/game/image/blue.png" );
+    border: 1px solid black;
+}
+
+/* AI 모델이 TOP 2~4 위치 (주황색) */
+.orange_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background-size: cover;
+    background-image: url( "/game/image/orange.png" );
+    border: 1px solid black;
+}
+
+/* AI 모델이 가장 높은 확률로 착수할 위치 = 실제 유저의 착수 위치 (파란색 체크 무늬) */
+.blue_check_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background-size: cover;
+    background-image: url( "/game/image/blue_check.png" );
+    border: 1px solid black;
+}
+
+/* AI 모델이 TOP 2~4 위치 = 실제 유저의 착수 위치 (주황색 체크 무늬) */
+.orange_check_stone {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background-size: cover;
+    background-image: url( "/game/image/orange_check.png" );
     border: 1px solid black;
 }
 

@@ -55,7 +55,7 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
                 var res_opponentUser = JSON.parse(JSON.stringify(res_all.opponentUser));
 
                 if (res_all.gameMatchingResult == "SUCCESS") {
-                    console.log("게임 매칭 성공!");
+                    // console.log("게임 매칭 성공!");
                     // [게임 중 버튼으로 변경]
                     document.getElementById("findingGame").style.display = "none";
                     document.getElementById("cancel").style.display = "none";
@@ -80,11 +80,11 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
                     // 게임 고유 ID
                     gameId = res_all.gameId;
 
-                    console.log("로그인 유저 고유 닉네임 : " + loginUser);
-                    console.log("로그인 유저 돌 상태 : " + loginUserTurn);
-                    console.log("게임 상대 유저 고유 닉네임 : " + opponentUser);
-                    console.log("게임 상대 유저 돌 상태 : " + opponentUserTurn);
-                    console.log("게임 정보 (고유 ID) : " + gameId);
+                    // console.log("로그인 유저 고유 닉네임 : " + loginUser);
+                    // console.log("로그인 유저 돌 상태 : " + loginUserTurn);
+                    // console.log("게임 상대 유저 고유 닉네임 : " + opponentUser);
+                    // console.log("게임 상대 유저 돌 상태 : " + opponentUserTurn);
+                    // console.log("게임 정보 (고유 ID) : " + gameId);
 
                     document.getElementById("box-left").style.display = "";
                     document.getElementById("box-right").style.display = "";
@@ -92,15 +92,22 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
                         document.getElementById("box-left").style.backgroundColor = "#000000";
                         document.getElementById("box-left").style.color = "#ffffff";
                         document.getElementById("box-right").style.backgroundColor = "#ffffff";
+
+                        // 흑돌 사이즈에 금수 관련 인덱스 추가
+                        document.getElementById("ban-sign-left").style.visibility = 'visible';
+
                     } else {
                         document.getElementById("box-left").style.backgroundColor = "#ffffff";
                         document.getElementById("box-right").style.backgroundColor = "#000000";
                         document.getElementById("box-right").style.color = "#ffffff";
+
+                        // 흑돌 사이즈에 금수 관련 인덱스 추가
+                        document.getElementById("ban-sign-right").style.visibility = 'visible';
                     }
 
                     // 생성된 게임 정보 구독 경로
                     var sub_destination = res_all.gameSubDestination;
-                    console.log("게임 구독 정보 : " + sub_destination);
+                    // console.log("게임 구독 정보 : " + sub_destination);
 
 
                     if (stompClient !== null) {
@@ -124,7 +131,7 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
                             // !게임 종료 응답 받는 경우 -> 게임 찾기 | 복기 하기 선택 화면으로 넘김
                             // {"loginUserNickname":"test2","opponentUserNickname":"test","gameId":39,"loginUserTurn":1,"opponentUserTurn":0,
                             // "x":0,"y":1, "isFinish" : 1}
-                            console.log("응답 받는 부분 : " + response.body);
+                            // console.log("응답 받는 부분 : " + response.body);
 
                             // String loginUserNickname
                             // String opponentUserNickname
@@ -140,7 +147,7 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
 
                             // 착수한 돌의 상태 체크 (흑 또는 백) via loginUserTurn (착수한 유저의 돌 상태 값 활용)
                             // 1 : 흑돌 -> BLACK , 2 : 백돌 -> WHITE
-                            if (resStoneObj.loginUserTurn == 1) {
+                            if (resStoneObj.loginUserTurn == BLACK) {
                                 g_turn_color = BLACK;
                             } else {
                                 g_turn_color = WHITE;
@@ -165,9 +172,20 @@ const ajax = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
                                 console.log("게임 종료!")
                                 // 게임 진행 중 버튼 --> invisible
                                 document.getElementById("gameIng").style.display = "none";
-                                // 유저 정보 (로그인, 상대) --> invisible
-                                document.getElementById("box-left").style.display = "none";
-                                document.getElementById("box-right").style.display = "none";
+
+
+                                // 로그인 유저 승리 (왼쪽 사이드 '승' 출력)
+                                if (loginUserTurn ==  g_turn_color) {
+                                    document.getElementById("game_result_left").innerText = "승";
+                                    document.getElementById("game_result_right").innerText = "패";
+                                }
+
+                                // 로그인 유저 패배 (왼쪽 사이드 '패' 출력)
+                                if (opponentUserTurn == g_turn_color) {
+                                    document.getElementById("game_result_left").innerText = "패";
+                                    document.getElementById("game_result_right").innerText = "승";
+                                }
+
 
                                 // 게임 찾기 버튼 --> visible
                                 document.getElementById("findGame2").style.display = "";

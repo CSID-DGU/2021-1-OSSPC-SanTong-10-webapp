@@ -12,6 +12,9 @@ import java.util.List;
 @Getter
 public class GameReviewResDto {
 
+    // 유저 네임
+    private String username;
+
     // 사이즈 (-> 이전, 다음 상태 이동의 기준)
     private int size;
 
