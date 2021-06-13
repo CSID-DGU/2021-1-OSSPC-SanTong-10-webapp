@@ -115,6 +115,7 @@
     position: absolute;
     width: 90%;
     height: 90%;
+    text-align: center;
     border-radius: 50%;
     background-size: cover;
     background-image: url( "/game/image/orange.png" );
@@ -126,6 +127,7 @@
     position: absolute;
     width: 90%;
     height: 90%;
+    text-align: center;
     border-radius: 50%;
     background-size: cover;
     background-image: url( "/game/image/blue_check.png" );
@@ -137,6 +139,7 @@
     position: absolute;
     width: 90%;
     height: 90%;
+    text-align: center;
     border-radius: 50%;
     background-size: cover;
     background-image: url( "/game/image/orange_check.png" );

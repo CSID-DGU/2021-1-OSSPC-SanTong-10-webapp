@@ -16,6 +16,12 @@ const REVIEW_NOT_TOP_NOT_SAME = 3;
 // 예를 들어, 흑-백-흑 인 경우(왼쪽 오목판 기준), current_size = 3
 var current_size = 0;
 
+// 복기 페이지에서 초기 또는 마지막 화면 체크
+var is_init_flag = -1;
+
+const IS_INIT_YES = 0;
+const IS_INIT_NO = 1;
+
 /** 유저가 진행한 게임에 대한 정보 조회 */
 // 복기 페이지 진입 시점
 const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
@@ -40,6 +46,7 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                  {
                      "username" : 유저 닉네임 (복기 페이지 상단 렌더링)
                      "size" : the-size-of-gameRecordList,
+                     "is_init" : first or last
                      "gameRecordList" :
                          [
                              {
@@ -75,6 +82,9 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
 
             // 현재 오목판 수에 표현된 사이즈
             current_size = resReviewApiObject.size;
+
+            // 현재 오목판의 상태 (초기 또는 마지막 화면인 지 체크)
+            is_init_flag = resReviewApiObject.is_init;
 
             // for loop
             var gameRecordList = JSON.parse(JSON.stringify(resReviewApiObject.gameRecordList));
@@ -148,29 +158,30 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 var flag = gameReviewRecordList[i].flag;
                 var winningRate = gameReviewRecordList[i].winningRate;
 
+                // AI 추천 위치에 확률 값 출력
+                console.log(winningRate);
+                position_right.innerText = winningRate;
+
+
+
                 if (flag == REVIEW_TOP_SAME) {
                     // 파란색 체크 무늬
                     position_right.className = 'blue_check_stone';
-                    position_right.innerText = ' ' + winningRate + '%';
-
                 }
 
                 if (flag == REVIEW_TOP_NOT_SAME) {
                     // 파란색
                     position_right.className = 'blue_stone';
-                    position_right.innerText = ' ' + winningRate + '%';
                 }
 
                 if (flag == REVIEW_NOT_TOP_SAME) {
                     // 주황색 체크 무늬
                     position_right.className = 'orange_check_stone';
-                    position_right.innerText = ' ' + winningRate + '%';
                 }
 
                 if (flag == REVIEW_NOT_TOP_NOT_SAME) {
                     // 주황색
                     position_right.className = 'orange_stone';
-                    position_right.innerText = ' ' + winningRate + '%';
                 }
             }
 
@@ -208,6 +219,11 @@ ajax_fetch_reviewInfo('/api/game-review', 'POST',  JSON.stringify(reviewGaeObjec
 // 이전 버튼으로 갈 때, 초기화를 하고 다시 그림
 function prevButton() {
 
+    if (is_init_flag == IS_INIT_YES) {
+        alert("복기 페이지 초기 화면입니다.");
+        return;
+    }
+
     for (var i=0; i < 15; i++) {
 
         for (var j = 0; j < 15; j++) {
@@ -230,6 +246,11 @@ function prevButton() {
 // 다음 버튼 +2
 // 다음 버튼으로 갈 때, 초기화를 하고 다시 그림
 function nextButton() {
+
+    if (is_init_flag == IS_INIT_NO) {
+        alert("마지막 복기 시점 입니다.");
+        return;
+    }
 
     for (var i=0; i < 15; i++) {
 
