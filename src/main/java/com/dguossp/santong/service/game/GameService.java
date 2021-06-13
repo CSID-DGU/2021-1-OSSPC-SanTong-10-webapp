@@ -86,20 +86,20 @@ public class GameService {
 
         // [2] 유저 수준에 맞는 게임 대기열에 PUT
         if (loginUser.getLevel() == NOVICE) {
-            log.info("로그인 유저 오목 게임 수준 : [초보]");
+//            log.info("로그인 유저 오목 게임 수준 : [초보]");
             // 게임 매칭 유저의 오목게임 수준이 "초보"
             searchingNoviceUsers.put(username, deferredResult);
             // [3] 게임 매칭 메소드 호출 -> 각 유저가 속한 레벨 대기열에서 상대 서칭.
             doMatchingGame(username, searchingNoviceUsers);
 
         } else if (loginUser.getLevel() == IM) {
-            log.info("로그인 유저 오목 게임 수준 : [중수]");
+//            log.info("로그인 유저 오목 게임 수준 : [중수]");
             // 게임 매칭 유저의 오목게임 수준이 "중수"
             searchingIMUsers.put(username, deferredResult);
             // [3] 게임 매칭 메소드 호출 -> 각 유저가 속한 레벨 대기열에서 상대 서칭.
             doMatchingGame(username, searchingIMUsers);
         } else {
-            log.info("로그인 유저 오목 게임 수준 : [고수]");
+//            log.info("로그인 유저 오목 게임 수준 : [고수]");
             // 게임 매칭 유저의 오목게임 수준이 "고수"
             searchingAdvancedUsers.put(username, deferredResult);
             // [3] 게임 매칭 메소드 호출 -> 각 유저가 속한 레벨 대기열에서 상대 서칭.
@@ -111,14 +111,14 @@ public class GameService {
 
             // 매칭 대기열에서 삭제
             if (loginUser.getLevel() == NOVICE) {
-                log.info("로그인 유저 오목 게임 수준 : [초보]");
+//                log.info("로그인 유저 오목 게임 수준 : [초보]");
                 searchingNoviceUsers.remove(username);
 
             } else if (loginUser.getLevel() == IM) {
-                log.info("로그인 유저 오목 게임 수준 : [중수]");
+//                log.info("로그인 유저 오목 게임 수준 : [중수]");
                 searchingIMUsers.remove(username);
             } else {
-                log.info("로그인 유저 오목 게임 수준 : [고수]");
+//                log.info("로그인 유저 오목 게임 수준 : [고수]");
                 searchingAdvancedUsers.remove(username);
             }
 
@@ -145,16 +145,16 @@ public class GameService {
 
         // [2] 유저의 오목게임 수준 기준에 맞춰, 해당 대기열에서 유저 정보 삭제
         if (loginUser.getLevel() == NOVICE) {
-            log.info("로그인 유저 오목 게임 수준 : [초보]");
+//            log.info("로그인 유저 오목 게임 수준 : [초보]");
             // 게임 매칭 유저의 오목게임 수준이 "초보"
             loginUserDeferredResult = searchingNoviceUsers.remove(username);
 
         } else if (loginUser.getLevel() == IM) {
-            log.info("로그인 유저 오목 게임 수준 : [중수]");
+//            log.info("로그인 유저 오목 게임 수준 : [중수]");
             // 게임 매칭 유저의 오목게임 수준이 "중수"
             loginUserDeferredResult = searchingIMUsers.remove(username);
         } else {
-            log.info("로그인 유저 오목 게임 수준 : [고수]");
+//            log.info("로그인 유저 오목 게임 수준 : [고수]");
             // 게임 매칭 유저의 오목게임 수준이 "고수"
             loginUserDeferredResult = searchingAdvancedUsers.remove(username);
         }
@@ -178,6 +178,7 @@ public class GameService {
         // 대기 상태에서 다른 상대유저가 매칭 요청을 보내는 경우 -> 게임 매칭 성공
         // 대기 상태에서 다른 상태유저가 매칭 요청을 보내지 않는 경우 -> 지정한 처리 시간 초과로 예외처리 대상 ("게임 매칭 실패")
         if (deferredResultMap.size() < 2) {
+            log.info("요청 보낸 유저 닉네임 : " + username);
             log.info("매칭할 상대 유저가 없습니다. (게임 찾는 유저 수 : " + deferredResultMap.size() + ")");
             return;
         }
@@ -193,6 +194,20 @@ public class GameService {
 
         // 게임 상대 유저의 DeferredResult 오브젝트
         DeferredResult<GameMatchingResponse> opponentUserDeferredResult = deferredResultMap.remove(opponentUsername);
+
+        // NPE DeferredResult 객체 값이 NULL 인 경우 Return
+        if (loginUserDeferredResult == null) {
+            log.error("loginUserDeferredResult is null");
+            return;
+        }
+
+        if (opponentUserDeferredResult == null)  {
+            log.error("opponentUserDeferredResult is null");
+            return;
+        }
+
+
+
 
         // 고유한 게임 방 ID 생성 -> 게임 매칭에 소속된 유저에게 WS STOMP SUB 경로로 활용 (해당 경로에 구독을 하고, 이를 통해 서로 게임 내 착수 데이터를 송/수신)
 
@@ -265,8 +280,8 @@ public class GameService {
 
     // 게임 상대유저 임의로 설정하기 (-> 상대 유저네임을 랜덤하게 픽해서 리턴)
     private String randomKey(Map<String, DeferredResult<GameMatchingResponse>> deferredResultMap) {
+        keySetsList.clear();
         keySetsList.addAll(deferredResultMap.keySet());
-        log.info("랜덤으로 픽된 상대 유저네임 : " + keySetsList.get(random.nextInt(keySetsList.size())));
         return keySetsList.get(random.nextInt(keySetsList.size()));
     }
 
