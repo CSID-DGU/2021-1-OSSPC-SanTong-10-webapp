@@ -272,28 +272,28 @@ public class GameReviewService {
                     int flag = REVIEW_FLAG_INIT;
 
                     // 1) (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일한 경우
-                    if (i == 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
+                    if (i == 0 && (rx == Integer.valueOf(arr_xyrate[1]) && ry == Integer.valueOf(arr_xyrate[0]))) {
                         flag = REVIEW_TOP_SAME;
                     }
 
                     // (가장 높은 확률)이 실제 유저가 놓은 좌표 값과 동일하지 않은 경우
-                    if (i == 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
+                    if (i == 0 && (rx != Integer.valueOf(arr_xyrate[1]) || ry != Integer.valueOf(arr_xyrate[0]))) {
                         flag = REVIEW_TOP_NOT_SAME;
                     }
 
-                    if (i != 0 && (rx == Integer.valueOf(arr_xyrate[0]) && ry == Integer.valueOf(arr_xyrate[1]))) {
+                    if (i != 0 && (rx == Integer.valueOf(arr_xyrate[1]) && ry == Integer.valueOf(arr_xyrate[0]))) {
                         flag = REVIEW_NOT_TOP_SAME;
                     }
 
-                    if (i != 0 && (rx != Integer.valueOf(arr_xyrate[0]) || ry != Integer.valueOf(arr_xyrate[1]))) {
+                    if (i != 0 && (rx != Integer.valueOf(arr_xyrate[1]) || ry != Integer.valueOf(arr_xyrate[0]))) {
                         flag = REVIEW_NOT_TOP_NOT_SAME;
                     }
 
 
                     // 가장 마지막 수 (= size)의 돌 상태 값 -> 해당 상태 값을 기준으로 복기 분석 제공
                     GameReviewDto gameReviewDto = GameReviewDto.builder()
-                            .x(Integer.valueOf(arr_xyrate[0]))
-                            .y(Integer.valueOf(arr_xyrate[1]))
+                            .x(Integer.valueOf(arr_xyrate[1]))
+                            .y(Integer.valueOf(arr_xyrate[0]))
                             .winningRate(Integer.valueOf(arr_xyrate[2]))
                             .flag(flag)
                             .build();
@@ -422,7 +422,7 @@ public class GameReviewService {
         jsonObject.put("placeandStatus", jsonArray);
         outer_jsonObject.put("object", jsonObject);
 
-        log.info(outer_jsonObject.toJSONString());
+//        log.info(outer_jsonObject.toJSONString());
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(BASE_URL, outer_jsonObject, String.class);
