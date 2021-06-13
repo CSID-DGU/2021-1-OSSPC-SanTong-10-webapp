@@ -248,40 +248,43 @@ public class GameReviewService {
                 // 리뷰 데이터에, 금수 위치 데이터가 포함된 경우 -> 리뷰 데이터에서 해당 좌표 값을 삭제
                 for (int j = 0; j < compareUnallowedList.size(); j++) {
                     if (compareReviewDataList.get(i).equals(compareUnallowedList.get(j))) {
-                        log.info("금수 = 리뷰 : " + compareReviewDataList.get(i));
+                        log.info("금수 = 리뷰 : " + compareReviewDataList.get(i) + ", i : " + i);
                         // 금수 위치와 중복되는 복기 결과를 제외 (위 복기vs리뷰 비교 중, 리뷰 데이터 인덱스 값 기준)
                         // 이 곳에서 리스트 값을 삭제하면, 에러 (Loop 내에서 실시간으로 삭제하지 못하도록 되어 있음)
                         removeIndexList.add(i);
                     }
                 }
-
             }
 
             // ',' 를 기준으로 배열형태로 변환 (via split) (review_list)
             String[] arr_xAndyAndrate = xAndyAndrate.split(",");
 
-            // 금수 = 리뷰 인 인덱스 값을 통해 해당 요소 리뷰 데이터 리스트에서 삭제
+            // 금수 = 리뷰 인 인덱스 값을 통해 해당 요소 리뷰 데이터 리스트에서 삭제 (인덱스 값이 삭제 시점 별로 계속, 바뀌므로 실제 대상 요소가 삭제되지 않음, compareReviewDataList -> 사이즈만 확인하는 격)
             for (int i = 0; i < removeIndexList.size(); i++) {
-                compareReviewDataList.remove(removeIndexList.get(i));
-                remove(removeIndexList.get(i), arr_xAndyAndrate);
-
+                changeToNullOnArr(removeIndexList.get(i), arr_xAndyAndrate);
             }
 
-            log.info("금수 위치 제외한 복기 데이터 리스트 : " + compareReviewDataList.toString());
-            log.info("금수 위치 제외한 복기 데이터 리스트 사이즈 : " + compareReviewDataList.size());
+            // 복기 데이터 (좌표값&확률) 값 어레이에서 null 값 제거
+            List<String> resultReviewArr = new ArrayList<>();
+            for (String element : arr_xAndyAndrate) {
+                if (element != null) {
+                    resultReviewArr.add(element);
+                }
+            }
+            arr_xAndyAndrate = resultReviewArr.toArray(new String[resultReviewArr.size()]);
 
-            // ['8&6&89', '9&5&7', '5&9&0', '10&5&0', '8&4&0', '9&8&0', '9&4&0', '7&5&0', '7&6&0', '8&5&0']
             for (int i = 0; i < arr_xAndyAndrate.length; i++) {
-                log.info("금수 위치 제외 배열 각 요소 값 : " + arr_xAndyAndrate[i]);
+                log.info("삭제 후 각 요소 값 : " + arr_xAndyAndrate[i]);
             }
 
 
             // Top 4를 제공 (금수 위치 제외하고 Top 4가 안 되는 경우, 복기 데이터 사이즈만큼만 제공)
             int serviceSize = AI_SERVICE_SIZE;
-            if (compareReviewDataList.size() >= 4) {
+            if (compareReviewDataList.size() - removeIndexList.size() >= 4) {
                 serviceSize = AI_SERVICE_SIZE;
             } else {
-                serviceSize = compareReviewDataList.size();
+                // EXCEPTION 사이즈가 0 또는 음수인 경우
+                serviceSize = compareReviewDataList.size() - removeIndexList.size();
             }
 
             // 금수 위치 제외하고, TOP 4를 보여준다.
@@ -455,7 +458,7 @@ public class GameReviewService {
                 String[] arr_xy = prevStateArr[j].split("_");
                 jsonObject_x_y.put("x", Integer.valueOf(arr_xy[1]));
                 jsonObject_x_y.put("y", Integer.valueOf(arr_xy[0]));
-                jsonObject_x_y.put("stoneStatus", Integer.valueOf(gameRecordsList.get(i).getStoneStatus()));
+                jsonObject_x_y.put("stoneStatus", Integer.valueOf(arr_xy[2]));
                 jsonArray_inner.add(jsonObject_x_y);
             }
             jsonArray.add(jsonArray_inner);
@@ -477,5 +480,12 @@ public class GameReviewService {
             array[i+1] = null;
         }
     }
+
+    // 특정 인덱스에 있는 값 null로 변환
+    public void changeToNullOnArr(int index, String[] array) {
+        array[index] = null;
+    }
+
+
 
 }
