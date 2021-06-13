@@ -177,11 +177,15 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 if (flag == REVIEW_TOP_SAME) {
                     // 파란색 체크 무늬
                     position_right.className = 'blue_check_stone';
+                    position_right.innerText = 1;
+                    position_right.style.fontWeight = 'bolder';
                 }
 
                 if (flag == REVIEW_TOP_NOT_SAME) {
                     // 파란색
                     position_right.className = 'blue_stone';
+                    position_right.innerText = 1;
+                    position_right.style.fontWeight = 'bolder';
                 }
 
                 if (flag == REVIEW_NOT_TOP_SAME) {
