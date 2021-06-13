@@ -146,25 +146,31 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 // 실제 돌 UI를 렌더링 할 포지션 값 (x_y) on 오른쪽 오목판
                 var position_right = document.getElementById(gameReviewRecordList[i].y + '^' + gameReviewRecordList[i].x);
                 var flag = gameReviewRecordList[i].flag;
+                var winningRate = gameReviewRecordList[i].winningRate;
 
                 if (flag == REVIEW_TOP_SAME) {
                     // 파란색 체크 무늬
                     position_right.className = 'blue_check_stone';
+                    position_right.innerText = ' ' + winningRate + '%';
+
                 }
 
                 if (flag == REVIEW_TOP_NOT_SAME) {
                     // 파란색
                     position_right.className = 'blue_stone';
+                    position_right.innerText = ' ' + winningRate + '%';
                 }
 
                 if (flag == REVIEW_NOT_TOP_SAME) {
                     // 주황색 체크 무늬
                     position_right.className = 'orange_check_stone';
+                    position_right.innerText = ' ' + winningRate + '%';
                 }
 
                 if (flag == REVIEW_NOT_TOP_NOT_SAME) {
                     // 주황색
                     position_right.className = 'orange_stone';
+                    position_right.innerText = ' ' + winningRate + '%';
                 }
             }
 
@@ -213,6 +219,7 @@ function prevButton() {
 
             position_left.className = '';
             position_right.className = '';
+            position_right.innerText = '';
 
         }
     }
@@ -235,6 +242,7 @@ function nextButton() {
 
             position_left.className = '';
             position_right.className = '';
+            position_right.innerText = '';
 
         }
     }
