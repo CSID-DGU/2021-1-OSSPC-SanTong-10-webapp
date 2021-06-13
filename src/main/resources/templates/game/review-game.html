@@ -71,6 +71,11 @@
             margin-top: 10px;
         }
 
+        .text {
+            color: blue;
+            font: 7px, "Open Sans", Helvetica, Arial, sans-serif;
+        }
+
     </style>
 </head>
 
@@ -98,7 +103,7 @@
     </div>
 </div>
 
-<div class="textbox" >
+<div class="textbox">
 	<span>
 		<span class="circle" style="width:60px;height:60px;"><img class="image-circle" src="game/image/green.png"></span>
 		<span>실제 User의 착수 위치</span>
@@ -120,6 +125,9 @@
 		<span class="circle" style="width:15px;height:15px;"><img class="image-circle" src="game/image/orange_check.png"></span>
 		<span>실제 User의 착수 위치 = Top 2~4 확률 위치</span>
 	</span>
+    <span>
+        <br><span class="text"> *AI 모델이 추천한 좌표 값의 숫자는 AI 모델이 해당 위치에 착수할 확률값입니다.</span>
+    </span>
 </div>
 
 <script src="/webjars/jquery/jquery.min.js"></script>
