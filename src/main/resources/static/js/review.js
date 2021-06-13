@@ -159,8 +159,8 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 var winningRate = gameReviewRecordList[i].winningRate;
 
                 // AI 추천 위치에 확률 값 출력
-                console.log(winningRate);
-                position_right.innerText = winningRate;
+                // console.log(winningRate);
+                // position_right.innerText = winningRate;
 
 
 
