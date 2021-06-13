@@ -22,6 +22,9 @@ var is_init_flag = -1;
 const IS_INIT_YES = 0;
 const IS_INIT_NO = 1;
 
+var TOP2_4 = 2;
+var TOP2_4_DEFAULT = 2;
+
 /** 유저가 진행한 게임에 대한 정보 조회 */
 // 복기 페이지 진입 시점
 const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) => {
@@ -112,6 +115,11 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                     position_left.className = 'white_stone';
                     position_right.className = 'white_stone';
                 }
+                // 왼쪽 오목판에서 해당 시점 유저가 마지막에 놓은 위치를 표기하지 않음 (임시 수정)
+                if (i != 0 && i == gameRecordList.length-1) {
+                    position_left.className = '';
+                }
+
                 // 오른쪽 오목판에서 해당 시점 유저가 마지막에 놓은 위치는 특정 돌 상태로 둘 것
                 if (i == gameRecordList.length-1) {
                     if (gameRecordList[i].stoneStatus == BLACK) {
@@ -144,6 +152,9 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 그 좌표 값(Top 2~4)이 실제 유저가 놓은 좌표 값과 동일하지 않은 경우 -> Flag 3
              * */
 
+            // TOP 2~4 표기 초기화 (2부터 계속 계산)
+            TOP2_4 = TOP2_4_DEFAULT; // 2
+
             for (var i = 0; i < gameReviewRecordList.length; i ++) {
 
                 // console.log("i.x : " + gameReviewRecordList[i].x);
@@ -163,7 +174,6 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 // position_right.innerText = winningRate;
 
 
-
                 if (flag == REVIEW_TOP_SAME) {
                     // 파란색 체크 무늬
                     position_right.className = 'blue_check_stone';
@@ -177,11 +187,15 @@ const ajax_fetch_reviewInfo = (ajax_url, ajax_type, ajax_data, ajax_data_type) =
                 if (flag == REVIEW_NOT_TOP_SAME) {
                     // 주황색 체크 무늬
                     position_right.className = 'orange_check_stone';
+                    position_right.innerText = TOP2_4;
+                    TOP2_4++;
                 }
 
                 if (flag == REVIEW_NOT_TOP_NOT_SAME) {
                     // 주황색
                     position_right.className = 'orange_stone';
+                    position_right.innerText = TOP2_4;
+                    TOP2_4++;
                 }
             }
 
