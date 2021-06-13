@@ -18,6 +18,9 @@ public class GameReviewResDto {
     // 사이즈 (-> 이전, 다음 상태 이동의 기준)
     private int size;
 
+    // Flag (맨 처음, 맨 뒤 상황 체크) / 0 : 맨 처음, 1 : 맨 뒤
+    private int is_init;
+
     // 좌표 값 리스트 (-> 좌표 값에 해당 돌 상태로 렌더링)
     private List<GameRecordsDto> gameRecordList;
 

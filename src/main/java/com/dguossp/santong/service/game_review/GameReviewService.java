@@ -33,6 +33,10 @@ public class GameReviewService {
 
     private static final String BASE_URL = "http://221.145.123.143:8000/osspapp/init/";
 
+    private static int IS_INIT_DEFAULT = -1;
+    private static int IS_INIT_YES = 0;
+    private static int IS_INIT_NO = 1;
+
     // 각 돌 상태 값 (흑 : 1, 백 : 2)
     private static int BLACK_TURN = 1;
     private static int WHITE_TURN = 2;
@@ -98,9 +102,10 @@ public class GameReviewService {
         modelMapper.addMappings(mapGameRecords);
 
 
-        // 유저 돌 상태 (= 복기 요청한 유저가 흑돌 또는 백돌인 지 파악)
+
+        // 로그인 유저 돌 상태 (= 복기 요청한 유저가 흑돌 또는 백돌인 지 파악)
         // 1 : 흑돌, 2 : 백돌
-        int stoneStatus = gameRecord.getStoneStatus();
+        int loginUserStoneStatus = gameRecord.getStoneStatus();
 
         // 현재 복기페이지에서 보여줘야 하는 좌표 수
         // 예를 들어, 1인 경우 흑돌 1개
@@ -108,13 +113,13 @@ public class GameReviewService {
         int size = gameReivewDto.getSize();
 
         if (size == 0) {
-            if (stoneStatus == BLACK_TURN) {
+            if (loginUserStoneStatus == BLACK_TURN) {
                 size = BLACK_INIT_SIZE;
             } else {
                 size = WHITE_INIT_SIZE;
             }
         } else if (size < 0) {
-            if (stoneStatus == BLACK_TURN) {
+            if (loginUserStoneStatus == BLACK_TURN) {
                 size = BLACK_INIT_SIZE;
             } else {
                 size = WHITE_INIT_SIZE;
@@ -125,17 +130,40 @@ public class GameReviewService {
 
         // 사이즈 예외 처리
         List<GameRecords> gameRecordListForCount = gameRecordsRepository.findAllByGame(game);
-        int stoneCount = gameRecordListForCount.size();
-        log.info("stoneCount : " + stoneCount);
+        int stone_totalSize = gameRecordListForCount.size();
+        log.info("stone_totalSize : " + stone_totalSize);
 
-        // 전체 게임에서 놓은 수 보다 큰 수를 요구하는 경우
-        if (size > stoneCount) {
-            // 사이즈 값을 게임에서 착수된 돌 개수 값으로 설정
-            size = stoneCount;
+        // 흑 -> 흑 시점에 종결 (흑 승리 또는 흑 패배)
+        // 백 -> 백 시점에 종결 (백 승리 또는 백 패배)
+
+        // 로그인 유저의 돌 상태
+        // 마지막 돌의 상태
+
+        // 로그인 유저의 돌 == 마지막 돌의 상태 -> 흑 또는 백 승리 (size = total_size)
+        // 로그인 유저의 돌 != 마지막 돌의 상태 -> 흑 또는 백 패배 (size = total_size-1)
+
+        int lastStoneStatus = gameRecordListForCount.get(stone_totalSize-1).getStoneStatus();
+        log.info("로그인 유저 돌 상태 값 : " + loginUserStoneStatus);
+        log.info("이긴 사람 돌 상태 값 : " + lastStoneStatus);
+
+        if (loginUserStoneStatus == lastStoneStatus) {
+            log.info("1");
+            // 전체 게임에서 놓은 수 보다 큰 수를 요구하는 경우
+            if (size > stone_totalSize) {
+                // 사이즈 값을 게임에서 착수된 돌 개수 값으로 설정
+                size = stone_totalSize;
+            }
+
+        } else {
+            log.info("2");
+            // 전체 게임에서 놓은 수 보다 큰 수를 요구하는 경우
+            if (size > stone_totalSize) {
+                // 사이즈 값을 게임에서 착수된 돌 개수 값으로 설정
+                size = stone_totalSize-1;
+            }
         }
 
         log.info("적용 사이즈 : " + size);
-
         // Pageable 오브젝트 내에서 size 값을 변수로 활용
         Pageable pageable = PageRequest.of(0, size);
 
@@ -234,8 +262,9 @@ public class GameReviewService {
 
             // 금수 = 리뷰 인 인덱스 값을 통해 해당 요소 리뷰 데이터 리스트에서 삭제
             for (int i = 0; i < removeIndexList.size(); i++) {
-                compareReviewDataList.remove(i);
-                remove(i, arr_xAndyAndrate);
+                compareReviewDataList.remove(removeIndexList.get(i));
+                remove(removeIndexList.get(i), arr_xAndyAndrate);
+
             }
 
             log.info("금수 위치 제외한 복기 데이터 리스트 : " + compareReviewDataList.toString());
@@ -304,11 +333,23 @@ public class GameReviewService {
             }
 
         }
+        // 복기 페이지 초기화면 여부 체크 (버튼 클릭 시, 맨 처음 또는 맨 뒤의 경우 Alert 띄우기 위함)
+        int is_init_flag = IS_INIT_DEFAULT;
+        if (size == stone_totalSize || size == stone_totalSize-1) {
+            is_init_flag = IS_INIT_NO;
+        } else if (size == 1 || size == 2) {
+            is_init_flag = IS_INIT_YES;
+        } else {
+            is_init_flag = IS_INIT_DEFAULT;
+        }
+
+
 
         // 복기 페이지 요청에 대한 최종 응답
         GameReviewResDto gameReviewResDto = GameReviewResDto.builder()
                 .username(username)
                 .size(size)
+                .is_init(is_init_flag)
                 .gameRecordList(gameRecordsList)
                 .gameReviewRecordsList(gameReviewList)
                 .build();
