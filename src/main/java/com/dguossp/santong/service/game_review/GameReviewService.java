@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Service
 public class GameReviewService {
 
-    private static final String BASE_URL = "http://*/osspapp/init/";
+    private static final String BASE_URL = "http://IP:8000/osspapp/init/";
 
     private static int IS_INIT_DEFAULT = -1;
     private static int IS_INIT_YES = 0;
