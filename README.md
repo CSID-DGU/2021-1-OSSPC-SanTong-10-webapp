@@ -47,5 +47,5 @@ ___
 
 ### | RESTful API 문서 정리 
 
-API 서버 구축 시, 서버와 클라이언트 간 소통을 위해 문서를 적극 활용했습니다. 
+API 서버 구축 시, 서버와 클라이언트 간 소통을 위해 문서를 적극 활용했습니다. (https://github.com/CSID-DGU/2021-1-OSSPC-SanTong-10-webapp/tree/develop/REST_APO_DOCS )
 
